@@ -2,6 +2,7 @@
 Mortgage amortization calculations.
 """
 import numpy as np
+import numpy_financial as npf
 import pandas as pd
 from typing import Optional
 
@@ -25,8 +26,8 @@ def amortize(loan_amount: float, rate_annual: float, term_years: int) -> pd.Data
     n = term_years * 12
     r = rate_annual / 12
     
-    # Calculate monthly payment using numpy PMT function
-    pmt = np.pmt(r, n, -loan_amount)
+    # Calculate monthly payment using numpy-financial PMT function
+    pmt = npf.pmt(r, n, -loan_amount)
     
     bal = loan_amount
     rows = []
@@ -142,12 +143,12 @@ def remaining_balance_at_month(
         return 0
     
     r = rate_annual / 12
-    pmt = np.pmt(r, total_months, -loan_amount)
+    pmt = npf.pmt(r, total_months, -loan_amount)
     
     # Calculate remaining balance using present value formula
     remaining_payments = total_months - month
     if remaining_payments <= 0:
         return 0
     
-    remaining_balance = np.pv(r, remaining_payments, -pmt, 0)
+    remaining_balance = npf.pv(r, remaining_payments, -pmt, 0)
     return max(remaining_balance, 0) 
