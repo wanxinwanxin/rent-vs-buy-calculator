@@ -3,7 +3,7 @@
 ## 🤖 Agent Briefing: Rent vs. Buy Calculator Codebase
 
 **Current Status**: PRODUCTION-READY IMPLEMENTATION ✅
-**Last Updated**: 2024-07-24
+**Last Updated**: 2024-12-19
 **Agent Instructions**: Keep this file updated when making significant changes
 
 ---
@@ -41,8 +41,8 @@
    - ✅ Sensitivity analysis tools (`sensitivity.py`)
 
 5. **Static Data** (`data/`)
-   - ✅ Tax rates for NYC/NJ area (`tax_defaults.json`)
-   - ✅ Property tax rates by location (`property_tax_defaults.csv`)
+   - ✅ Tax rates for 16 US states including NYC local tax (`tax_defaults.json`)
+   - ✅ Property tax rates for 70+ major US cities (`property_tax_defaults.csv`)
    - ✅ Default assumptions (`assumptions.yaml`)
 
 6. **Testing Infrastructure**
@@ -106,7 +106,7 @@ rent-vs-buy-calculator/
 - **Tax Shield Modeling**: Itemization vs. standard deduction with SALT cap
 - **Investment Returns**: Compound growth of rent surplus investments
 - **Financial Metrics**: NPV, IRR, break-even analysis
-- **Regional Support**: NYC/NJ tax and property data built-in
+- **Regional Support**: Comprehensive coverage for 16 US states (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR) with NYC local income tax
 
 ### UI Features
 - **Smart Defaults**: Auto-populates based on location and assumptions
@@ -209,7 +209,8 @@ python3 tests/e2e/test_streamlit_app.py
 - No consideration of refinancing optimization
 
 ### Data Coverage
-- Limited to NYC/NJ area (easily extensible)
+- Covers 16 major US states with 70+ cities (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR)
+- Includes NYC local income tax separate from NY state tax
 - Static data from 2024 (API integration ready)
 - No real-time market data integration
 
@@ -332,6 +333,9 @@ When making significant changes, update this file by:
 - 2024-07-23: Removed invalid `format="%,d"` from all number inputs in `ui/widgets.py`
 - 2024-07-23: Enhanced UI with comma-formatted display labels for better dollar amount readability
 - 2024-07-24: Added comprehensive buy vs rent comparison table showing monthly breakdown and how top-line metrics are calculated
+- 2024-12-19: **MAJOR EXPANSION**: Added support for 16 US states (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR) with 70+ cities
+- 2024-12-19: Implemented NYC local income tax (separate from NY state tax) with proper tax bracket calculation
+- 2024-12-19: Enhanced tax lookup system to handle both state and local taxes with income-based marginal rate calculation
 
 ---
 

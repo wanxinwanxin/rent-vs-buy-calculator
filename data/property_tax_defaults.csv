@@ -19,4 +19,62 @@ location,state,county,property_tax_rate,effective_rate,data_source,last_updated
 "New Canaan, CT",CT,Fairfield,0.0158,0.0158,CT Office of Policy and Management,2024
 "Westchester County, NY",NY,Westchester,0.0217,0.0217,NY State Department of Taxation,2024
 "Long Island, NY",NY,Nassau,0.0209,0.0209,NY State Department of Taxation,2024
+"Los Angeles, CA",CA,Los Angeles,0.0075,0.0075,LA County Assessor,2024
+"San Francisco, CA",CA,San Francisco,0.0076,0.0076,San Francisco Assessor,2024
+"San Diego, CA",CA,San Diego,0.0068,0.0068,San Diego County Assessor,2024
+"San Jose, CA",CA,Santa Clara,0.0077,0.0077,Santa Clara County Assessor,2024
+"Oakland, CA",CA,Alameda,0.0081,0.0081,Alameda County Assessor,2024
+"Palo Alto, CA",CA,Santa Clara,0.0063,0.0063,Santa Clara County Assessor,2024
+"Beverly Hills, CA",CA,Los Angeles,0.0055,0.0055,LA County Assessor,2024
+"Dallas, TX",TX,Dallas,0.0181,0.0181,Dallas County Appraisal District,2024
+"Houston, TX",TX,Harris,0.0173,0.0173,Harris County Appraisal District,2024
+"Austin, TX",TX,Travis,0.0181,0.0181,Travis County Appraisal District,2024
+"San Antonio, TX",TX,Bexar,0.0154,0.0154,Bexar County Appraisal District,2024
+"Fort Worth, TX",TX,Tarrant,0.0205,0.0205,Tarrant County Appraisal District,2024
+"Plano, TX",TX,Collin,0.0190,0.0190,Collin County Appraisal District,2024
+"Miami, FL",FL,Miami-Dade,0.0134,0.0134,Miami-Dade County Property Appraiser,2024
+"Orlando, FL",FL,Orange,0.0110,0.0110,Orange County Property Appraiser,2024
+"Tampa, FL",FL,Hillsborough,0.0105,0.0105,Hillsborough County Property Appraiser,2024
+"Jacksonville, FL",FL,Duval,0.0120,0.0120,Duval County Property Appraiser,2024
+"Fort Lauderdale, FL",FL,Broward,0.0125,0.0125,Broward County Property Appraiser,2024
+"Naples, FL",FL,Collier,0.0089,0.0089,Collier County Property Appraiser,2024
+"Chicago, IL",IL,Cook,0.0221,0.0221,Cook County Assessor,2024
+"Naperville, IL",IL,DuPage,0.0240,0.0240,DuPage County Clerk,2024
+"Evanston, IL",IL,Cook,0.0198,0.0198,Cook County Assessor,2024
+"Lake Forest, IL",IL,Lake,0.0175,0.0175,Lake County Clerk,2024
+"Seattle, WA",WA,King,0.0092,0.0092,King County Assessor,2024
+"Bellevue, WA",WA,King,0.0078,0.0078,King County Assessor,2024
+"Redmond, WA",WA,King,0.0090,0.0090,King County Assessor,2024
+"Tacoma, WA",WA,Pierce,0.0108,0.0108,Pierce County Assessor,2024
+"Boston, MA",MA,Suffolk,0.0105,0.0105,City of Boston Assessing Department,2024
+"Cambridge, MA",MA,Middlesex,0.0069,0.0069,Cambridge Assessing Department,2024
+"Newton, MA",MA,Middlesex,0.0119,0.0119,Newton Assessing Department,2024
+"Brookline, MA",MA,Norfolk,0.0084,0.0084,Brookline Assessing Department,2024
+"Arlington, VA",VA,Arlington,0.0081,0.0081,Arlington County Assessor,2024
+"Alexandria, VA",VA,Alexandria,0.0113,0.0113,Alexandria Assessor,2024
+"Fairfax, VA",VA,Fairfax,0.0111,0.0111,Fairfax County Assessor,2024
+"Richmond, VA",VA,Richmond,0.0120,0.0120,Richmond Assessor,2024
+"Atlanta, GA",GA,Fulton,0.0108,0.0108,Fulton County Board of Assessors,2024
+"Sandy Springs, GA",GA,Fulton,0.0095,0.0095,Fulton County Board of Assessors,2024
+"Alpharetta, GA",GA,Fulton,0.0098,0.0098,Fulton County Board of Assessors,2024
+"Charlotte, NC",NC,Mecklenburg,0.0104,0.0104,Mecklenburg County Assessor,2024
+"Raleigh, NC",NC,Wake,0.0088,0.0088,Wake County Assessor,2024
+"Durham, NC",NC,Durham,0.0112,0.0112,Durham County Assessor,2024
+"Columbus, OH",OH,Franklin,0.0159,0.0159,Franklin County Auditor,2024
+"Cleveland, OH",OH,Cuyahoga,0.0189,0.0189,Cuyahoga County Auditor,2024
+"Cincinnati, OH",OH,Hamilton,0.0167,0.0167,Hamilton County Auditor,2024
+"Philadelphia, PA",PA,Philadelphia,0.0138,0.0138,Philadelphia Office of Property Assessment,2024
+"Pittsburgh, PA",PA,Allegheny,0.0108,0.0108,Allegheny County Office of Property Assessments,2024
+"Detroit, MI",MI,Wayne,0.0191,0.0191,Wayne County Treasurer,2024
+"Grand Rapids, MI",MI,Kent,0.0153,0.0153,Kent County Treasurer,2024
+"Phoenix, AZ",AZ,Maricopa,0.0066,0.0066,Maricopa County Assessor,2024
+"Scottsdale, AZ",AZ,Maricopa,0.0063,0.0063,Maricopa County Assessor,2024
+"Tucson, AZ",AZ,Pima,0.0073,0.0073,Pima County Assessor,2024
+"Las Vegas, NV",NV,Clark,0.0084,0.0084,Clark County Assessor,2024
+"Reno, NV",NV,Washoe,0.0078,0.0078,Washoe County Assessor,2024
+"Denver, CO",CO,Denver,0.0755,0.0755,Denver Assessor,2024
+"Boulder, CO",CO,Boulder,0.0090,0.0090,Boulder County Assessor,2024
+"Colorado Springs, CO",CO,El Paso,0.0075,0.0075,El Paso County Assessor,2024
+"Portland, OR",OR,Multnomah,0.0103,0.0103,Multnomah County Assessor,2024
+"Eugene, OR",OR,Lane,0.0125,0.0125,Lane County Assessor,2024
 "DEFAULT",DEFAULT,DEFAULT,0.012,0.012,National Average,2024 

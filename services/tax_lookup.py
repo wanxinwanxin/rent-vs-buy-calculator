@@ -182,13 +182,30 @@ def get_tax_params(
         # Fallback to legacy fixed rate or default
         state_marginal_rate = state_data.get("marginal_rate", 0.0)
     
+    # Add local taxes if available (e.g., NYC local income tax)
+    local_marginal_rate = 0.0
+    local_taxes = year_data.get("local_taxes", {})
+    if city in local_taxes and filing_status in local_taxes[city]:
+        local_data = local_taxes[city][filing_status]
+        if income is not None and "tax_brackets" in local_data:
+            # Use local standard deduction if available, otherwise use state deduction
+            local_standard_deduction = local_data.get("standard_deduction", state_standard_deduction)
+            local_taxable_income = max(0, income - local_standard_deduction)
+            local_marginal_rate = calculate_marginal_rate_from_brackets(local_taxable_income, local_data["tax_brackets"])
+        else:
+            # Fallback to legacy fixed rate
+            local_marginal_rate = local_data.get("marginal_rate", 0.0)
+    
+    # Combine state and local rates
+    combined_state_local_rate = state_marginal_rate + local_marginal_rate
+    
     # Combine federal and state standard deductions (take the higher one)
     state_standard_deduction = state_data.get("standard_deduction", 0)
     final_standard_deduction = max(standard_deduction, state_standard_deduction)
     
     return TaxParams(
         federal_marginal_rate=federal_marginal_rate,
-        state_marginal_rate=state_marginal_rate,
+        state_marginal_rate=combined_state_local_rate,
         salt_cap=salt_cap,
         standard_deduction=final_standard_deduction,
         location=location,
@@ -266,6 +283,22 @@ def get_tax_breakdown(
         state_marginal = calculate_marginal_rate_from_brackets(state_taxable, state_data["tax_brackets"])
         state_effective = get_effective_tax_rate_from_brackets(state_taxable, state_data["tax_brackets"])
     
+    # Add local taxes if available (e.g., NYC local income tax)
+    local_marginal = 0.0
+    local_effective = 0.0
+    local_taxes = year_data.get("local_taxes", {})
+    if city in local_taxes and filing_status in local_taxes[city]:
+        local_data = local_taxes[city][filing_status]
+        if "tax_brackets" in local_data:
+            local_std_ded = local_data.get("standard_deduction", state_std_ded)
+            local_taxable = max(0, income - local_std_ded)
+            local_marginal = calculate_marginal_rate_from_brackets(local_taxable, local_data["tax_brackets"])
+            local_effective = get_effective_tax_rate_from_brackets(local_taxable, local_data["tax_brackets"])
+    
+    # Combine state and local rates
+    combined_state_marginal = state_marginal + local_marginal
+    combined_state_effective = state_effective + local_effective
+    
     return {
         "income": income,
         "location": location,
@@ -278,14 +311,14 @@ def get_tax_breakdown(
         },
         "state": {
             "taxable_income": state_taxable,
-            "marginal_rate": state_marginal,
-            "effective_rate": state_effective,
+            "marginal_rate": combined_state_marginal,
+            "effective_rate": combined_state_effective,
             "standard_deduction": state_std_ded,
             "state_code": state
         },
         "combined": {
-            "marginal_rate": federal_marginal + state_marginal,
-            "effective_rate": federal_effective + state_effective
+            "marginal_rate": federal_marginal + combined_state_marginal,
+            "effective_rate": federal_effective + combined_state_effective
         }
     }
 
@@ -305,10 +338,42 @@ def get_available_locations() -> list[str]:
     locations = []
     for state in states:
         if state == "NY":
-            locations.extend(["NYC, NY", "Brooklyn, NY", "Queens, NY", "Westchester County, NY"])
+            locations.extend(["NYC, NY", "Brooklyn, NY", "Queens, NY", "Bronx, NY", "Staten Island, NY", "Westchester County, NY", "Long Island, NY"])
         elif state == "NJ":
-            locations.extend(["Hoboken, NJ", "Jersey City, NJ", "Princeton, NJ"])
+            locations.extend(["Hoboken, NJ", "Jersey City, NJ", "Fort Lee, NJ", "Princeton, NJ", "Summit, NJ", "Montclair, NJ"])
         elif state == "CT":
-            locations.extend(["Stamford, CT", "Greenwich, CT"])
+            locations.extend(["Stamford, CT", "Greenwich, CT", "New Canaan, CT"])
+        elif state == "CA":
+            locations.extend(["Los Angeles, CA", "San Francisco, CA", "San Diego, CA", "San Jose, CA", "Oakland, CA", "Palo Alto, CA", "Beverly Hills, CA"])
+        elif state == "TX":
+            locations.extend(["Dallas, TX", "Houston, TX", "Austin, TX", "San Antonio, TX", "Fort Worth, TX", "Plano, TX"])
+        elif state == "FL":
+            locations.extend(["Miami, FL", "Orlando, FL", "Tampa, FL", "Jacksonville, FL", "Fort Lauderdale, FL", "Naples, FL"])
+        elif state == "IL":
+            locations.extend(["Chicago, IL", "Naperville, IL", "Evanston, IL", "Lake Forest, IL"])
+        elif state == "WA":
+            locations.extend(["Seattle, WA", "Bellevue, WA", "Redmond, WA", "Tacoma, WA"])
+        elif state == "MA":
+            locations.extend(["Boston, MA", "Cambridge, MA", "Newton, MA", "Brookline, MA"])
+        elif state == "VA":
+            locations.extend(["Arlington, VA", "Alexandria, VA", "Fairfax, VA", "Richmond, VA"])
+        elif state == "GA":
+            locations.extend(["Atlanta, GA", "Sandy Springs, GA", "Alpharetta, GA"])
+        elif state == "NC":
+            locations.extend(["Charlotte, NC", "Raleigh, NC", "Durham, NC"])
+        elif state == "OH":
+            locations.extend(["Columbus, OH", "Cleveland, OH", "Cincinnati, OH"])
+        elif state == "PA":
+            locations.extend(["Philadelphia, PA", "Pittsburgh, PA"])
+        elif state == "MI":
+            locations.extend(["Detroit, MI", "Grand Rapids, MI"])
+        elif state == "AZ":
+            locations.extend(["Phoenix, AZ", "Scottsdale, AZ", "Tucson, AZ"])
+        elif state == "NV":
+            locations.extend(["Las Vegas, NV", "Reno, NV"])
+        elif state == "CO":
+            locations.extend(["Denver, CO", "Boulder, CO", "Colorado Springs, CO"])
+        elif state == "OR":
+            locations.extend(["Portland, OR", "Eugene, OR"])
     
-    return locations 
+    return sorted(locations) 
