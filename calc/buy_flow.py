@@ -179,6 +179,9 @@ def calculate_buy_cash_flows(
         # After-tax monthly outflow
         net_outflow = gross_outflow - tax_shield
         
+        # True out-of-pocket cost (excluding principal which builds equity)
+        true_monthly_cost = interest_payment + monthly_costs["total_monthly_costs"] - tax_shield
+        
         cash_flows.append({
             "month": month,
             "home_value": home_value,
@@ -194,13 +197,19 @@ def calculate_buy_cash_flows(
             "tax_shield": tax_shield,
             "gross_monthly_outflow": gross_outflow,
             "net_monthly_outflow": net_outflow,
-            "cumulative_net_outflow": 0  # Will be calculated below
+            "true_monthly_cost": true_monthly_cost,
+            "cumulative_net_outflow": 0,  # Will be calculated below
+            "cumulative_true_cost": 0     # Will be calculated below
         })
     
     df = pd.DataFrame(cash_flows)
     
     # Calculate cumulative outflows
     df["cumulative_net_outflow"] = df["net_monthly_outflow"].cumsum()
+    
+    # Calculate cumulative true costs (excluding principal, including down payment)
+    down_payment_plus_closing = derived_inputs.down_payment_amount + user_inputs.closing_costs_buy
+    df["cumulative_true_cost"] = down_payment_plus_closing + df["true_monthly_cost"].cumsum()
     
     return df
 

@@ -57,13 +57,18 @@ def calculate_rent_cash_flows(
             "total_rent_outflow": total_rent_outflow,
             "monthly_surplus": monthly_surplus,
             "portfolio_balance": portfolio_balance,
-            "cumulative_rent_outflow": 0  # Will be calculated below
+            "cumulative_rent_outflow": 0,  # Will be calculated below
+            "cumulative_total_cash_spent": 0  # Will be calculated below
         })
     
     df = pd.DataFrame(cash_flows)
     
     # Calculate cumulative outflows
     df["cumulative_rent_outflow"] = df["total_rent_outflow"].cumsum()
+    
+    # Calculate cumulative total cash spent (rent + initial investment that could have been down payment)
+    initial_cash_commitment = derived_inputs.down_payment_amount + user_inputs.closing_costs_buy
+    df["cumulative_total_cash_spent"] = initial_cash_commitment + df["cumulative_rent_outflow"]
     
     return df
 

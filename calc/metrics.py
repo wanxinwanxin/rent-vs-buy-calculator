@@ -70,11 +70,16 @@ def calculate_breakeven_month(
     rent_cumulative_costs: pd.Series
 ) -> Optional[int]:
     """
-    Calculate the month when buying becomes cheaper than renting (break-even).
+    Calculate the month when total cash spent on buying becomes less than or equal to 
+    total cash spent on renting (break-even).
+    
+    This compares:
+    - Buy: Down payment + closing costs + cumulative out-of-pocket costs (excluding principal)
+    - Rent: Down payment opportunity + cumulative rent payments
     
     Args:
-        buy_cumulative_costs: Cumulative costs for buying scenario
-        rent_cumulative_costs: Cumulative costs for renting scenario
+        buy_cumulative_costs: Cumulative true costs for buying (including down payment, excluding equity building)
+        rent_cumulative_costs: Cumulative total cash spent on renting (including opportunity cost)
         
     Returns:
         Month number (1-indexed) when buying breaks even, or None if never

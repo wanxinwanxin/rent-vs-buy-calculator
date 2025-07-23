@@ -57,10 +57,10 @@ def run_full_analysis(
         derived_inputs.monthly_inflation_rate
     )
     
-    # Calculate break-even month
+    # Calculate break-even month (corrected to include down payment and exclude equity building)
     breakeven_month = calculate_breakeven_month(
-        buy_cash_flows["cumulative_net_outflow"],
-        rent_cash_flows["cumulative_rent_outflow"]
+        buy_cash_flows["cumulative_true_cost"],
+        rent_cash_flows["cumulative_total_cash_spent"]
     )
     
     # Calculate IRR for buy investment
