@@ -1,0 +1,54 @@
+# Default assumptions for rent vs buy calculator
+# All rates are annual unless specified
+
+# Homeownership costs
+homeownership:
+  maintenance_pct: 0.015  # 1.5% of home value annually
+  selling_cost_pct: 0.06  # 6% for realtor fees, transfer taxes, etc.
+  insurance_annual_pct: 0.003  # 0.3% of home value for insurance
+  
+# PMI assumptions
+pmi:
+  threshold_ltv: 0.20  # PMI required above 80% LTV
+  annual_rate: 0.005   # 0.5% annually on loan balance
+  
+# Financial assumptions
+financial:
+  alt_return_annual: 0.07     # 7% stock market return
+  inflation_rate: 0.03        # 3% inflation
+  income_growth_rate: 0.03    # 3% annual income growth
+  
+# Market assumptions
+market:
+  home_appreciation: 0.03     # 3% annual home appreciation
+  rent_growth_rate: 0.03      # 3% annual rent growth
+  
+# Mortgage assumptions
+mortgage:
+  typical_down_payment: 0.20  # 20% down payment
+  typical_rate: 0.07          # 7% mortgage rate
+  typical_term_years: 30      # 30-year mortgage
+  
+# Tax assumptions
+tax:
+  itemization_threshold: 0.5  # Assume itemizing if deductions > 50% of standard
+  
+# Regional adjustments
+regional:
+  high_cost_areas:
+    - "NYC, NY"
+    - "San Francisco, CA" 
+    - "Washington, DC"
+  adjustments:
+    maintenance_multiplier: 1.2  # 20% higher maintenance in high-cost areas
+    insurance_multiplier: 1.1    # 10% higher insurance
+    
+# Data sources and notes
+metadata:
+  data_sources:
+    - "IRS Publication 936 (Mortgage Interest Deduction)"
+    - "National Association of Realtors"
+    - "Federal Reserve Economic Data"
+    - "Local tax assessor offices"
+  last_updated: "2024-01-01"
+  assumptions_note: "These are typical values - users should input actual known values when available" 

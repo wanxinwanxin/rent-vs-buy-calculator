@@ -1,0 +1,22 @@
+location,state,county,property_tax_rate,effective_rate,data_source,last_updated
+"NYC, NY",NY,New York,0.0128,0.0128,NYC Department of Finance,2024
+"Brooklyn, NY",NY,Kings,0.0067,0.0067,NYC Department of Finance,2024
+"Queens, NY",NY,Queens,0.0110,0.0110,NYC Department of Finance,2024
+"Bronx, NY",NY,Bronx,0.0127,0.0127,NYC Department of Finance,2024
+"Staten Island, NY",NY,Richmond,0.0057,0.0057,NYC Department of Finance,2024
+"Hoboken, NJ",NJ,Hudson,0.0134,0.0134,NJ Division of Taxation,2024
+"Jersey City, NJ",NJ,Hudson,0.0218,0.0218,NJ Division of Taxation,2024
+"Weehawken, NJ",NJ,Hudson,0.0115,0.0115,NJ Division of Taxation,2024
+"Fort Lee, NJ",NJ,Bergen,0.0189,0.0189,NJ Division of Taxation,2024
+"Englewood, NJ",NJ,Bergen,0.0275,0.0275,NJ Division of Taxation,2024
+"Morristown, NJ",NJ,Morris,0.0263,0.0263,NJ Division of Taxation,2024
+"Summit, NJ",NJ,Union,0.0233,0.0233,NJ Division of Taxation,2024
+"Princeton, NJ",NJ,Mercer,0.0188,0.0188,NJ Division of Taxation,2024
+"Westfield, NJ",NJ,Union,0.0231,0.0231,NJ Division of Taxation,2024
+"Montclair, NJ",NJ,Essex,0.0288,0.0288,NJ Division of Taxation,2024
+"Stamford, CT",CT,Fairfield,0.0191,0.0191,CT Office of Policy and Management,2024
+"Greenwich, CT",CT,Fairfield,0.0112,0.0112,CT Office of Policy and Management,2024
+"New Canaan, CT",CT,Fairfield,0.0158,0.0158,CT Office of Policy and Management,2024
+"Westchester County, NY",NY,Westchester,0.0217,0.0217,NY State Department of Taxation,2024
+"Long Island, NY",NY,Nassau,0.0209,0.0209,NY State Department of Taxation,2024
+"DEFAULT",DEFAULT,DEFAULT,0.012,0.012,National Average,2024 

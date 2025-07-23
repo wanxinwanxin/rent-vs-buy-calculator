@@ -1,0 +1,55 @@
+{
+  "2024": {
+    "federal": {
+      "single": {
+        "marginal_rate": 0.24,
+        "standard_deduction": 14600,
+        "salt_cap": 10000
+      },
+      "married": {
+        "marginal_rate": 0.24,
+        "standard_deduction": 29200,
+        "salt_cap": 10000
+      }
+    },
+    "states": {
+      "NY": {
+        "single": {
+          "marginal_rate": 0.065,
+          "standard_deduction": 8000
+        },
+        "married": {
+          "marginal_rate": 0.065,
+          "standard_deduction": 16050
+        }
+      },
+      "NJ": {
+        "single": {
+          "marginal_rate": 0.0897,
+          "standard_deduction": 1000
+        },
+        "married": {
+          "marginal_rate": 0.0897,
+          "standard_deduction": 2000
+        }
+      },
+      "CT": {
+        "single": {
+          "marginal_rate": 0.0699,
+          "standard_deduction": 0
+        },
+        "married": {
+          "marginal_rate": 0.0699,
+          "standard_deduction": 0
+        }
+      }
+    }
+  },
+  "defaults": {
+    "income_brackets": {
+      "description": "These are simplified marginal rates for upper-middle income households",
+      "federal_assumptions": "Assumes 24% federal marginal bracket (~$100k+ income)",
+      "state_assumptions": "Uses top marginal rates for each state"
+    }
+  }
+} 
