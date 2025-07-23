@@ -3,7 +3,7 @@
 ## 🤖 Agent Briefing: Rent vs. Buy Calculator Codebase
 
 **Current Status**: PRODUCTION-READY IMPLEMENTATION ✅
-**Last Updated**: 2024-12-23
+**Last Updated**: 2024-12-25
 **Agent Instructions**: Keep this file updated when making significant changes
 
 ---
@@ -108,7 +108,7 @@ rent-vs-buy-calculator/
 - **Tax Shield Modeling**: Itemization vs. standard deduction with SALT cap
 - **Investment Returns**: Compound growth of rent surplus investments
 - **Financial Metrics**: NPV, IRR, break-even analysis
-- **Regional Support**: Comprehensive coverage for 16 US states (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR) with NYC local income tax
+- **Regional Support**: Comprehensive coverage for 16 US states (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR) with NYC local income tax, plus 25+ international cities across Canada, UK, Australia, Singapore, Japan, and Hong Kong
 
 ### UI Features
 - **Smart Defaults**: Auto-populates based on location and assumptions
@@ -212,9 +212,29 @@ python3 tests/e2e/test_streamlit_app.py
 - No consideration of refinancing optimization
 
 ### Data Coverage
-- Covers 16 major US states with 70+ cities (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR)
+- **US Coverage**: 16 major US states with 70+ cities (CA, TX, FL, IL, WA, MA, VA, GA, NC, OH, PA, MI, AZ, NV, CO, OR)
+- **International Coverage**: 95+ major international cities across 18 countries/regions:
+  - **Canada**: Toronto, Vancouver, Montreal, Calgary, Ottawa, Edmonton (federal + provincial taxes)
+  - **United Kingdom**: London, Manchester, Edinburgh, Birmingham, Glasgow, Liverpool (income tax + council tax)
+  - **Australia**: Sydney, Melbourne, Brisbane, Perth, Adelaide (federal income tax)
+  - **Singapore**: Singapore city-state (progressive income tax, no property tax)
+  - **Japan**: Tokyo, Osaka, Yokohama (progressive income tax + property tax)
+  - **Hong Kong**: Hong Kong SAR (salaries tax, no property tax)
+  - **Germany**: Berlin, Munich, Hamburg, Frankfurt, Cologne, Stuttgart (progressive income tax + property tax)
+  - **France**: Paris, Lyon, Marseille, Toulouse, Nice, Bordeaux (progressive income tax + property tax)
+  - **Italy**: Rome, Milan, Naples, Turin, Florence, Bologna (progressive income tax + property tax)
+  - **Spain**: Madrid, Barcelona, Valencia, Seville, Bilbao, Malaga (progressive income tax + property tax)
+  - **Netherlands**: Amsterdam, Rotterdam, The Hague, Utrecht, Eindhoven, Tilburg (progressive income tax + property tax)
+  - **Switzerland**: Zurich, Geneva, Basel, Bern, Lausanne, Winterthur (federal + cantonal taxes + low property tax)
+  - **Belgium**: Brussels, Antwerp, Ghent, Bruges, Leuven, Liege (progressive income tax + property tax)
+  - **Austria**: Vienna, Salzburg, Innsbruck, Graz, Linz, Klagenfurt (progressive income tax + property tax)
+  - **Sweden**: Stockholm, Gothenburg, Malmö, Uppsala, Västerås, Örebro (income tax + property tax)
+  - **Norway**: Oslo, Bergen, Trondheim, Stavanger, Kristiansand, Fredrikstad (progressive income tax + property tax)
+  - **Denmark**: Copenhagen, Aarhus, Odense, Aalborg, Esbjerg, Randers (progressive income tax + property tax)
+  - **Finland**: Helsinki, Tampere, Turku, Oulu, Jyväskylä, Lahti (progressive income tax + property tax)
 - Includes NYC local income tax separate from NY state tax
 - Static data from 2024 (API integration ready)
+- Progressive tax bracket calculations for accurate marginal rate determination
 - No real-time market data integration
 
 ### UI/UX
@@ -340,7 +360,8 @@ When making significant changes, update this file by:
 - 2024-12-19: Implemented NYC local income tax (separate from NY state tax) with proper tax bracket calculation
 - 2024-12-19: Enhanced tax lookup system to handle both state and local taxes with income-based marginal rate calculation
 - 2024-12-23: **NEW FEATURE**: Added URL sharing functionality allowing users to share analysis scenarios via shareable links
-- 2024-12-23: **ENHANCEMENT**: Added auto-run functionality - shared URLs now immediately display full analysis results
+- 2024-12-23: **ENHANCEMENT**: Added auto-run functionality - shared URLs now immediately display full analysis results  
+- 2024-12-25: **MAJOR EXPANSION**: Added comprehensive international jurisdiction support for 95+ cities across 18 countries/regions (Canada, UK, Australia, Singapore, Japan, Hong Kong, Germany, France, Italy, Spain, Netherlands, Switzerland, Belgium, Austria, Sweden, Norway, Denmark, Finland)
 
 ---
 

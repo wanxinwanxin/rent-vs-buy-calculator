@@ -374,6 +374,546 @@
           ]
         }
       }
+    },
+    "international": {
+      "canada": {
+        "federal": {
+          "single": {
+            "standard_deduction": 15000,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 55867, "rate": 0.15},
+              {"min_income": 55867, "max_income": 111733, "rate": 0.205},
+              {"min_income": 111733, "max_income": 173205, "rate": 0.26},
+              {"min_income": 173205, "max_income": 246752, "rate": 0.29},
+              {"min_income": 246752, "max_income": null, "rate": 0.33}
+            ]
+          },
+          "married": {
+            "standard_deduction": 15000,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 55867, "rate": 0.15},
+              {"min_income": 55867, "max_income": 111733, "rate": 0.205},
+              {"min_income": 111733, "max_income": 173205, "rate": 0.26},
+              {"min_income": 173205, "max_income": 246752, "rate": 0.29},
+              {"min_income": 246752, "max_income": null, "rate": 0.33}
+            ]
+          }
+        },
+        "provinces": {
+          "ON": {
+            "single": {
+              "standard_deduction": 12399,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 51446, "rate": 0.0505},
+                {"min_income": 51446, "max_income": 102894, "rate": 0.0915},
+                {"min_income": 102894, "max_income": 150000, "rate": 0.1116},
+                {"min_income": 150000, "max_income": 220000, "rate": 0.1216},
+                {"min_income": 220000, "max_income": null, "rate": 0.1316}
+              ]
+            },
+            "married": {
+              "standard_deduction": 12399,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 51446, "rate": 0.0505},
+                {"min_income": 51446, "max_income": 102894, "rate": 0.0915},
+                {"min_income": 102894, "max_income": 150000, "rate": 0.1116},
+                {"min_income": 150000, "max_income": 220000, "rate": 0.1216},
+                {"min_income": 220000, "max_income": null, "rate": 0.1316}
+              ]
+            }
+          },
+          "BC": {
+            "single": {
+              "standard_deduction": 12760,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 47937, "rate": 0.0506},
+                {"min_income": 47937, "max_income": 95875, "rate": 0.077},
+                {"min_income": 95875, "max_income": 110076, "rate": 0.105},
+                {"min_income": 110076, "max_income": 133664, "rate": 0.1229},
+                {"min_income": 133664, "max_income": 181232, "rate": 0.147},
+                {"min_income": 181232, "max_income": null, "rate": 0.2044}
+              ]
+            },
+            "married": {
+              "standard_deduction": 12760,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 47937, "rate": 0.0506},
+                {"min_income": 47937, "max_income": 95875, "rate": 0.077},
+                {"min_income": 95875, "max_income": 110076, "rate": 0.105},
+                {"min_income": 110076, "max_income": 133664, "rate": 0.1229},
+                {"min_income": 133664, "max_income": 181232, "rate": 0.147},
+                {"min_income": 181232, "max_income": null, "rate": 0.2044}
+              ]
+            }
+          }
+        }
+      },
+      "united_kingdom": {
+        "income_tax": {
+          "england": {
+            "single": {
+              "standard_deduction": 12570,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 37700, "rate": 0.20},
+                {"min_income": 37700, "max_income": 125140, "rate": 0.40},
+                {"min_income": 125140, "max_income": null, "rate": 0.45}
+              ]
+            },
+            "married": {
+              "standard_deduction": 12570,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 37700, "rate": 0.20},
+                {"min_income": 37700, "max_income": 125140, "rate": 0.40},
+                {"min_income": 125140, "max_income": null, "rate": 0.45}
+              ]
+            }
+          },
+          "scotland": {
+            "single": {
+              "standard_deduction": 12570,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 2306, "rate": 0.19},
+                {"min_income": 2306, "max_income": 13991, "rate": 0.20},
+                {"min_income": 13991, "max_income": 31092, "rate": 0.21},
+                {"min_income": 31092, "max_income": 62430, "rate": 0.42},
+                {"min_income": 62430, "max_income": 125140, "rate": 0.45},
+                {"min_income": 125140, "max_income": null, "rate": 0.48}
+              ]
+            },
+            "married": {
+              "standard_deduction": 12570,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 2306, "rate": 0.19},
+                {"min_income": 2306, "max_income": 13991, "rate": 0.20},
+                {"min_income": 13991, "max_income": 31092, "rate": 0.21},
+                {"min_income": 31092, "max_income": 62430, "rate": 0.42},
+                {"min_income": 62430, "max_income": 125140, "rate": 0.45},
+                {"min_income": 125140, "max_income": null, "rate": 0.48}
+              ]
+            }
+          }
+        }
+      },
+      "australia": {
+        "federal": {
+          "single": {
+            "standard_deduction": 18200,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 18200, "rate": 0.0},
+              {"min_income": 18200, "max_income": 45000, "rate": 0.19},
+              {"min_income": 45000, "max_income": 120000, "rate": 0.325},
+              {"min_income": 120000, "max_income": 180000, "rate": 0.37},
+              {"min_income": 180000, "max_income": null, "rate": 0.45}
+            ]
+          },
+          "married": {
+            "standard_deduction": 18200,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 18200, "rate": 0.0},
+              {"min_income": 18200, "max_income": 45000, "rate": 0.19},
+              {"min_income": 45000, "max_income": 120000, "rate": 0.325},
+              {"min_income": 120000, "max_income": 180000, "rate": 0.37},
+              {"min_income": 180000, "max_income": null, "rate": 0.45}
+            ]
+          }
+        }
+      },
+      "singapore": {
+        "income_tax": {
+          "resident": {
+            "single": {
+              "standard_deduction": 1000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 20000, "rate": 0.0},
+                {"min_income": 20000, "max_income": 30000, "rate": 0.02},
+                {"min_income": 30000, "max_income": 40000, "rate": 0.035},
+                {"min_income": 40000, "max_income": 80000, "rate": 0.07},
+                {"min_income": 80000, "max_income": 120000, "rate": 0.115},
+                {"min_income": 120000, "max_income": 160000, "rate": 0.15},
+                {"min_income": 160000, "max_income": 200000, "rate": 0.18},
+                {"min_income": 200000, "max_income": 240000, "rate": 0.19},
+                {"min_income": 240000, "max_income": 280000, "rate": 0.195},
+                {"min_income": 280000, "max_income": 320000, "rate": 0.20},
+                {"min_income": 320000, "max_income": 500000, "rate": 0.22},
+                {"min_income": 500000, "max_income": 1000000, "rate": 0.23},
+                {"min_income": 1000000, "max_income": null, "rate": 0.24}
+              ]
+            },
+            "married": {
+              "standard_deduction": 1000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 20000, "rate": 0.0},
+                {"min_income": 20000, "max_income": 30000, "rate": 0.02},
+                {"min_income": 30000, "max_income": 40000, "rate": 0.035},
+                {"min_income": 40000, "max_income": 80000, "rate": 0.07},
+                {"min_income": 80000, "max_income": 120000, "rate": 0.115},
+                {"min_income": 120000, "max_income": 160000, "rate": 0.15},
+                {"min_income": 160000, "max_income": 200000, "rate": 0.18},
+                {"min_income": 200000, "max_income": 240000, "rate": 0.19},
+                {"min_income": 240000, "max_income": 280000, "rate": 0.195},
+                {"min_income": 280000, "max_income": 320000, "rate": 0.20},
+                {"min_income": 320000, "max_income": 500000, "rate": 0.22},
+                {"min_income": 500000, "max_income": 1000000, "rate": 0.23},
+                {"min_income": 1000000, "max_income": null, "rate": 0.24}
+              ]
+            }
+          },
+          "non_resident": {
+            "single": {
+              "standard_deduction": 0,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": null, "rate": 0.24}
+              ]
+            },
+            "married": {
+              "standard_deduction": 0,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": null, "rate": 0.24}
+              ]
+            }
+          }
+        }
+      },
+      "japan": {
+        "income_tax": {
+          "resident": {
+            "single": {
+              "standard_deduction": 380000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 1950000, "rate": 0.05},
+                {"min_income": 1950000, "max_income": 3300000, "rate": 0.10},
+                {"min_income": 3300000, "max_income": 6950000, "rate": 0.20},
+                {"min_income": 6950000, "max_income": 9000000, "rate": 0.23},
+                {"min_income": 9000000, "max_income": 18000000, "rate": 0.33},
+                {"min_income": 18000000, "max_income": 40000000, "rate": 0.40},
+                {"min_income": 40000000, "max_income": null, "rate": 0.45}
+              ]
+            },
+            "married": {
+              "standard_deduction": 760000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 1950000, "rate": 0.05},
+                {"min_income": 1950000, "max_income": 3300000, "rate": 0.10},
+                {"min_income": 3300000, "max_income": 6950000, "rate": 0.20},
+                {"min_income": 6950000, "max_income": 9000000, "rate": 0.23},
+                {"min_income": 9000000, "max_income": 18000000, "rate": 0.33},
+                {"min_income": 18000000, "max_income": 40000000, "rate": 0.40},
+                {"min_income": 40000000, "max_income": null, "rate": 0.45}
+              ]
+            }
+          }
+        }
+      },
+      "hong_kong": {
+        "salaries_tax": {
+          "resident": {
+            "single": {
+              "standard_deduction": 132000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 50000, "rate": 0.02},
+                {"min_income": 50000, "max_income": 100000, "rate": 0.06},
+                {"min_income": 100000, "max_income": 150000, "rate": 0.10},
+                {"min_income": 150000, "max_income": 200000, "rate": 0.14},
+                {"min_income": 200000, "max_income": null, "rate": 0.17}
+              ]
+            },
+            "married": {
+              "standard_deduction": 264000,
+              "tax_brackets": [
+                {"min_income": 0, "max_income": 50000, "rate": 0.02},
+                {"min_income": 50000, "max_income": 100000, "rate": 0.06},
+                {"min_income": 100000, "max_income": 150000, "rate": 0.10},
+                {"min_income": 150000, "max_income": 200000, "rate": 0.14},
+                {"min_income": 200000, "max_income": null, "rate": 0.17}
+              ]
+            }
+          }
+        }
+      },
+      "germany": {
+        "federal": {
+          "single": {
+            "standard_deduction": 10908,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 10908, "rate": 0.0},
+              {"min_income": 10908, "max_income": 62809, "rate": 0.14},
+              {"min_income": 62809, "max_income": 277825, "rate": 0.42},
+              {"min_income": 277825, "max_income": null, "rate": 0.45}
+            ]
+          },
+          "married": {
+            "standard_deduction": 21816,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 21816, "rate": 0.0},
+              {"min_income": 21816, "max_income": 125618, "rate": 0.14},
+              {"min_income": 125618, "max_income": 555650, "rate": 0.42},
+              {"min_income": 555650, "max_income": null, "rate": 0.45}
+            ]
+          }
+        }
+      },
+      "france": {
+        "federal": {
+          "single": {
+            "standard_deduction": 10777,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 10777, "rate": 0.0},
+              {"min_income": 10777, "max_income": 27478, "rate": 0.11},
+              {"min_income": 27478, "max_income": 78570, "rate": 0.30},
+              {"min_income": 78570, "max_income": 168994, "rate": 0.41},
+              {"min_income": 168994, "max_income": null, "rate": 0.45}
+            ]
+          },
+          "married": {
+            "standard_deduction": 21554,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 21554, "rate": 0.0},
+              {"min_income": 21554, "max_income": 54956, "rate": 0.11},
+              {"min_income": 54956, "max_income": 157140, "rate": 0.30},
+              {"min_income": 157140, "max_income": 337988, "rate": 0.41},
+              {"min_income": 337988, "max_income": null, "rate": 0.45}
+            ]
+          }
+        }
+      },
+      "italy": {
+        "federal": {
+          "single": {
+            "standard_deduction": 8174,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 15000, "rate": 0.23},
+              {"min_income": 15000, "max_income": 28000, "rate": 0.27},
+              {"min_income": 28000, "max_income": 50000, "rate": 0.38},
+              {"min_income": 50000, "max_income": null, "rate": 0.43}
+            ]
+          },
+          "married": {
+            "standard_deduction": 8174,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 15000, "rate": 0.23},
+              {"min_income": 15000, "max_income": 28000, "rate": 0.27},
+              {"min_income": 28000, "max_income": 50000, "rate": 0.38},
+              {"min_income": 50000, "max_income": null, "rate": 0.43}
+            ]
+          }
+        }
+      },
+      "spain": {
+        "federal": {
+          "single": {
+            "standard_deduction": 5550,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 12450, "rate": 0.19},
+              {"min_income": 12450, "max_income": 20200, "rate": 0.24},
+              {"min_income": 20200, "max_income": 35200, "rate": 0.30},
+              {"min_income": 35200, "max_income": 60000, "rate": 0.37},
+              {"min_income": 60000, "max_income": 300000, "rate": 0.45},
+              {"min_income": 300000, "max_income": null, "rate": 0.47}
+            ]
+          },
+          "married": {
+            "standard_deduction": 5550,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 12450, "rate": 0.19},
+              {"min_income": 12450, "max_income": 20200, "rate": 0.24},
+              {"min_income": 20200, "max_income": 35200, "rate": 0.30},
+              {"min_income": 35200, "max_income": 60000, "rate": 0.37},
+              {"min_income": 60000, "max_income": 300000, "rate": 0.45},
+              {"min_income": 300000, "max_income": null, "rate": 0.47}
+            ]
+          }
+        }
+      },
+      "netherlands": {
+        "federal": {
+          "single": {
+            "standard_deduction": 2837,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 37149, "rate": 0.3693},
+              {"min_income": 37149, "max_income": 73031, "rate": 0.4950},
+              {"min_income": 73031, "max_income": null, "rate": 0.4950}
+            ]
+          },
+          "married": {
+            "standard_deduction": 2837,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 37149, "rate": 0.3693},
+              {"min_income": 37149, "max_income": 73031, "rate": 0.4950},
+              {"min_income": 73031, "max_income": null, "rate": 0.4950}
+            ]
+          }
+        }
+      },
+      "switzerland": {
+        "federal": {
+          "single": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 14500, "rate": 0.0},
+              {"min_income": 14500, "max_income": 31600, "rate": 0.0077},
+              {"min_income": 31600, "max_income": 41400, "rate": 0.0088},
+              {"min_income": 41400, "max_income": 55200, "rate": 0.0264},
+              {"min_income": 55200, "max_income": 72500, "rate": 0.0594},
+              {"min_income": 72500, "max_income": 78100, "rate": 0.0628},
+              {"min_income": 78100, "max_income": 103600, "rate": 0.0825},
+              {"min_income": 103600, "max_income": 134600, "rate": 0.1100},
+              {"min_income": 134600, "max_income": 176000, "rate": 0.1320},
+              {"min_income": 176000, "max_income": null, "rate": 0.1155}
+            ]
+          },
+          "married": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 29000, "rate": 0.0},
+              {"min_income": 29000, "max_income": 63200, "rate": 0.0077},
+              {"min_income": 63200, "max_income": 82800, "rate": 0.0088},
+              {"min_income": 82800, "max_income": 110400, "rate": 0.0264},
+              {"min_income": 110400, "max_income": 145000, "rate": 0.0594},
+              {"min_income": 145000, "max_income": 156200, "rate": 0.0628},
+              {"min_income": 156200, "max_income": 207200, "rate": 0.0825},
+              {"min_income": 207200, "max_income": 269200, "rate": 0.1100},
+              {"min_income": 269200, "max_income": 352000, "rate": 0.1320},
+              {"min_income": 352000, "max_income": null, "rate": 0.1155}
+            ]
+          }
+        }
+      },
+      "belgium": {
+        "federal": {
+          "single": {
+            "standard_deduction": 9270,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 13540, "rate": 0.25},
+              {"min_income": 13540, "max_income": 23720, "rate": 0.40},
+              {"min_income": 23720, "max_income": 41360, "rate": 0.45},
+              {"min_income": 41360, "max_income": null, "rate": 0.50}
+            ]
+          },
+          "married": {
+            "standard_deduction": 9270,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 13540, "rate": 0.25},
+              {"min_income": 13540, "max_income": 23720, "rate": 0.40},
+              {"min_income": 23720, "max_income": 41360, "rate": 0.45},
+              {"min_income": 41360, "max_income": null, "rate": 0.50}
+            ]
+          }
+        }
+      },
+      "austria": {
+        "federal": {
+          "single": {
+            "standard_deduction": 12000,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 11000, "rate": 0.0},
+              {"min_income": 11000, "max_income": 18000, "rate": 0.20},
+              {"min_income": 18000, "max_income": 31000, "rate": 0.35},
+              {"min_income": 31000, "max_income": 60000, "rate": 0.42},
+              {"min_income": 60000, "max_income": 90000, "rate": 0.48},
+              {"min_income": 90000, "max_income": 1000000, "rate": 0.50},
+              {"min_income": 1000000, "max_income": null, "rate": 0.55}
+            ]
+          },
+          "married": {
+            "standard_deduction": 12000,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 11000, "rate": 0.0},
+              {"min_income": 11000, "max_income": 18000, "rate": 0.20},
+              {"min_income": 18000, "max_income": 31000, "rate": 0.35},
+              {"min_income": 31000, "max_income": 60000, "rate": 0.42},
+              {"min_income": 60000, "max_income": 90000, "rate": 0.48},
+              {"min_income": 90000, "max_income": 1000000, "rate": 0.50},
+              {"min_income": 1000000, "max_income": null, "rate": 0.55}
+            ]
+          }
+        }
+      },
+      "sweden": {
+        "federal": {
+          "single": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 689700, "rate": 0.32},
+              {"min_income": 689700, "max_income": null, "rate": 0.52}
+            ]
+          },
+          "married": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 689700, "rate": 0.32},
+              {"min_income": 689700, "max_income": null, "rate": 0.52}
+            ]
+          }
+        }
+      },
+      "norway": {
+        "federal": {
+          "single": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 208050, "rate": 0.22},
+              {"min_income": 208050, "max_income": 292850, "rate": 0.24},
+              {"min_income": 292850, "max_income": 670600, "rate": 0.316},
+              {"min_income": 670600, "max_income": 937900, "rate": 0.356},
+              {"min_income": 937900, "max_income": 2000000, "rate": 0.376},
+              {"min_income": 2000000, "max_income": null, "rate": 0.396}
+            ]
+          },
+          "married": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 208050, "rate": 0.22},
+              {"min_income": 208050, "max_income": 292850, "rate": 0.24},
+              {"min_income": 292850, "max_income": 670600, "rate": 0.316},
+              {"min_income": 670600, "max_income": 937900, "rate": 0.356},
+              {"min_income": 937900, "max_income": 2000000, "rate": 0.376},
+              {"min_income": 2000000, "max_income": null, "rate": 0.396}
+            ]
+          }
+        }
+      },
+      "denmark": {
+        "federal": {
+          "single": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 568900, "rate": 0.3793},
+              {"min_income": 568900, "max_income": null, "rate": 0.559}
+            ]
+          },
+          "married": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 568900, "rate": 0.3793},
+              {"min_income": 568900, "max_income": null, "rate": 0.559}
+            ]
+          }
+        }
+      },
+      "finland": {
+        "federal": {
+          "single": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 20500, "rate": 0.0},
+              {"min_income": 20500, "max_income": 31300, "rate": 0.1225},
+              {"min_income": 31300, "max_income": 51700, "rate": 0.175},
+              {"min_income": 51700, "max_income": 94300, "rate": 0.2125},
+              {"min_income": 94300, "max_income": null, "rate": 0.3125}
+            ]
+          },
+          "married": {
+            "standard_deduction": 0,
+            "tax_brackets": [
+              {"min_income": 0, "max_income": 20500, "rate": 0.0},
+              {"min_income": 20500, "max_income": 31300, "rate": 0.1225},
+              {"min_income": 31300, "max_income": 51700, "rate": 0.175},
+              {"min_income": 51700, "max_income": 94300, "rate": 0.2125},
+              {"min_income": 94300, "max_income": null, "rate": 0.3125}
+            ]
+          }
+        }
+      }
     }
   },
   "api_config": {

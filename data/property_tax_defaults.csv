@@ -77,4 +77,98 @@ location,state,county,property_tax_rate,effective_rate,data_source,last_updated
 "Colorado Springs, CO",CO,El Paso,0.0075,0.0075,El Paso County Assessor,2024
 "Portland, OR",OR,Multnomah,0.0103,0.0103,Multnomah County Assessor,2024
 "Eugene, OR",OR,Lane,0.0125,0.0125,Lane County Assessor,2024
-"DEFAULT",DEFAULT,DEFAULT,0.012,0.012,National Average,2024 
+"DEFAULT",DEFAULT,DEFAULT,0.012,0.012,National Average,2024
+"Toronto, ON",ON,Toronto,0.007153,0.007153,City of Toronto,2024
+"Vancouver, BC",BC,Vancouver,0.002968,0.002968,City of Vancouver,2024
+"Montreal, QC",QC,Montreal,0.006180,0.006180,City of Montreal,2024
+"Calgary, AB",AB,Calgary,0.006486,0.006486,City of Calgary,2024
+"Ottawa, ON",ON,Ottawa,0.011956,0.011956,City of Ottawa,2024
+"Edmonton, AB",AB,Edmonton,0.010174,0.010174,City of Edmonton,2024
+"London, England",UK,Greater London,0.001104,0.001104,Westminster Council,2024
+"Manchester, England",UK,Greater Manchester,0.003939,0.003939,Manchester City Council,2024
+"Edinburgh, Scotland",UK,Scotland,0.002906,0.002906,City of Edinburgh Council,2024
+"Birmingham, England",UK,West Midlands,0.003826,0.003826,Birmingham City Council,2024
+"Glasgow, Scotland",UK,Scotland,0.003035,0.003035,Glasgow City Council,2024
+"Liverpool, England",UK,Merseyside,0.004615,0.004615,Liverpool City Council,2024
+"Sydney, NSW",NSW,Sydney,0.005500,0.005500,City of Sydney,2024
+"Melbourne, VIC",VIC,Melbourne,0.006200,0.006200,City of Melbourne,2024
+"Brisbane, QLD",QLD,Brisbane,0.005800,0.005800,Brisbane City Council,2024
+"Perth, WA",WA,Perth,0.005300,0.005300,City of Perth,2024
+"Adelaide, SA",SA,Adelaide,0.006100,0.006100,City of Adelaide,2024
+"Singapore",SG,Singapore,0.000000,0.000000,No Annual Property Tax,2024
+"Tokyo, Japan",JP,Tokyo,0.014000,0.014000,Tokyo Metropolitan Government,2024
+"Osaka, Japan",JP,Osaka,0.014000,0.014000,Osaka City,2024
+"Hong Kong",HK,Hong Kong,0.000000,0.000000,No Annual Property Tax,2024 
+"Yokohama, Japan",Japan,Yokohama,0.014000,0.014000,City of Yokohama,2024
+"Berlin, Germany",Germany,Berlin,0.002100,0.002100,City of Berlin,2024
+"Munich, Germany",Germany,Munich,0.002100,0.002100,City of Munich,2024
+"Hamburg, Germany",Germany,Hamburg,0.002100,0.002100,City of Hamburg,2024
+"Frankfurt, Germany",Germany,Frankfurt,0.002100,0.002100,City of Frankfurt,2024
+"Cologne, Germany",Germany,Cologne,0.002100,0.002100,City of Cologne,2024
+"Stuttgart, Germany",Germany,Stuttgart,0.002100,0.002100,City of Stuttgart,2024
+"Paris, France",France,Paris,0.009800,0.009800,City of Paris,2024
+"Lyon, France",France,Lyon,0.009800,0.009800,City of Lyon,2024
+"Marseille, France",France,Marseille,0.009800,0.009800,City of Marseille,2024
+"Toulouse, France",France,Toulouse,0.009800,0.009800,City of Toulouse,2024
+"Nice, France",France,Nice,0.009800,0.009800,City of Nice,2024
+"Bordeaux, France",France,Bordeaux,0.009800,0.009800,City of Bordeaux,2024
+"Rome, Italy",Italy,Rome,0.006200,0.006200,City of Rome,2024
+"Milan, Italy",Italy,Milan,0.006200,0.006200,City of Milan,2024
+"Naples, Italy",Italy,Naples,0.006200,0.006200,City of Naples,2024
+"Turin, Italy",Italy,Turin,0.006200,0.006200,City of Turin,2024
+"Florence, Italy",Italy,Florence,0.006200,0.006200,City of Florence,2024
+"Bologna, Italy",Italy,Bologna,0.006200,0.006200,City of Bologna,2024
+"Madrid, Spain",Spain,Madrid,0.005800,0.005800,City of Madrid,2024
+"Barcelona, Spain",Spain,Barcelona,0.005800,0.005800,City of Barcelona,2024
+"Valencia, Spain",Spain,Valencia,0.005800,0.005800,City of Valencia,2024
+"Seville, Spain",Spain,Seville,0.005800,0.005800,City of Seville,2024
+"Bilbao, Spain",Spain,Bilbao,0.005800,0.005800,City of Bilbao,2024
+"Malaga, Spain",Spain,Malaga,0.005800,0.005800,City of Malaga,2024
+"Amsterdam, Netherlands",Netherlands,Amsterdam,0.005100,0.005100,City of Amsterdam,2024
+"Rotterdam, Netherlands",Netherlands,Rotterdam,0.005100,0.005100,City of Rotterdam,2024
+"The Hague, Netherlands",Netherlands,The Hague,0.005100,0.005100,City of The Hague,2024
+"Utrecht, Netherlands",Netherlands,Utrecht,0.005100,0.005100,City of Utrecht,2024
+"Eindhoven, Netherlands",Netherlands,Eindhoven,0.005100,0.005100,City of Eindhoven,2024
+"Tilburg, Netherlands",Netherlands,Tilburg,0.005100,0.005100,City of Tilburg,2024
+"Zurich, Switzerland",Switzerland,Zurich,0.000800,0.000800,City of Zurich,2024
+"Geneva, Switzerland",Switzerland,Geneva,0.000800,0.000800,City of Geneva,2024
+"Basel, Switzerland",Switzerland,Basel,0.000800,0.000800,City of Basel,2024
+"Bern, Switzerland",Switzerland,Bern,0.000800,0.000800,City of Bern,2024
+"Lausanne, Switzerland",Switzerland,Lausanne,0.000800,0.000800,City of Lausanne,2024
+"Winterthur, Switzerland",Switzerland,Winterthur,0.000800,0.000800,City of Winterthur,2024
+"Brussels, Belgium",Belgium,Brussels,0.006000,0.006000,City of Brussels,2024
+"Antwerp, Belgium",Belgium,Antwerp,0.006000,0.006000,City of Antwerp,2024
+"Ghent, Belgium",Belgium,Ghent,0.006000,0.006000,City of Ghent,2024
+"Bruges, Belgium",Belgium,Bruges,0.006000,0.006000,City of Bruges,2024
+"Leuven, Belgium",Belgium,Leuven,0.006000,0.006000,City of Leuven,2024
+"Liege, Belgium",Belgium,Liege,0.006000,0.006000,City of Liege,2024
+"Vienna, Austria",Austria,Vienna,0.001000,0.001000,City of Vienna,2024
+"Salzburg, Austria",Austria,Salzburg,0.001000,0.001000,City of Salzburg,2024
+"Innsbruck, Austria",Austria,Innsbruck,0.001000,0.001000,City of Innsbruck,2024
+"Graz, Austria",Austria,Graz,0.001000,0.001000,City of Graz,2024
+"Linz, Austria",Austria,Linz,0.001000,0.001000,City of Linz,2024
+"Klagenfurt, Austria",Austria,Klagenfurt,0.001000,0.001000,City of Klagenfurt,2024
+"Stockholm, Sweden",Sweden,Stockholm,0.003400,0.003400,City of Stockholm,2024
+"Gothenburg, Sweden",Sweden,Gothenburg,0.003400,0.003400,City of Gothenburg,2024
+"Malmö, Sweden",Sweden,Malmö,0.003400,0.003400,City of Malmö,2024
+"Uppsala, Sweden",Sweden,Uppsala,0.003400,0.003400,City of Uppsala,2024
+"Västerås, Sweden",Sweden,Västerås,0.003400,0.003400,City of Västerås,2024
+"Örebro, Sweden",Sweden,Örebro,0.003400,0.003400,City of Örebro,2024
+"Oslo, Norway",Norway,Oslo,0.002000,0.002000,City of Oslo,2024
+"Bergen, Norway",Norway,Bergen,0.002000,0.002000,City of Bergen,2024
+"Trondheim, Norway",Norway,Trondheim,0.002000,0.002000,City of Trondheim,2024
+"Stavanger, Norway",Norway,Stavanger,0.002000,0.002000,City of Stavanger,2024
+"Kristiansand, Norway",Norway,Kristiansand,0.002000,0.002000,City of Kristiansand,2024
+"Fredrikstad, Norway",Norway,Fredrikstad,0.002000,0.002000,City of Fredrikstad,2024
+"Copenhagen, Denmark",Denmark,Copenhagen,0.007400,0.007400,City of Copenhagen,2024
+"Aarhus, Denmark",Denmark,Aarhus,0.007400,0.007400,City of Aarhus,2024
+"Odense, Denmark",Denmark,Odense,0.007400,0.007400,City of Odense,2024
+"Aalborg, Denmark",Denmark,Aalborg,0.007400,0.007400,City of Aalborg,2024
+"Esbjerg, Denmark",Denmark,Esbjerg,0.007400,0.007400,City of Esbjerg,2024
+"Randers, Denmark",Denmark,Randers,0.007400,0.007400,City of Randers,2024
+"Helsinki, Finland",Finland,Helsinki,0.003700,0.003700,City of Helsinki,2024
+"Tampere, Finland",Finland,Tampere,0.003700,0.003700,City of Tampere,2024
+"Turku, Finland",Finland,Turku,0.003700,0.003700,City of Turku,2024
+"Oulu, Finland",Finland,Oulu,0.003700,0.003700,City of Oulu,2024
+"Jyväskylä, Finland",Finland,Jyväskylä,0.003700,0.003700,City of Jyväskylä,2024
+"Lahti, Finland",Finland,Lahti,0.003700,0.003700,City of Lahti,2024 

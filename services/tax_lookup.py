@@ -109,15 +109,301 @@ def get_effective_tax_rate_from_brackets(income: float, tax_brackets: List[Dict]
 
 
 def parse_location(location: str) -> tuple[str, str]:
-    """Parse location string into city and state."""
+    """Parse location string into city and state/country."""
     if "," in location:
         parts = location.split(",")
         city = parts[0].strip()
-        state = parts[1].strip().upper()
-        return city, state
+        region = parts[1].strip().upper()
+        return city, region
     else:
-        # Assume it's just a state
+        # Assume it's just a state/country
         return "", location.strip().upper()
+
+
+def is_international_location(location: str) -> tuple[bool, str]:
+    """
+    Check if location is international and return country code.
+    
+    Returns:
+        Tuple of (is_international, country_code)
+    """
+    city, region = parse_location(location)
+    
+    # International location patterns
+    international_regions = {
+        # Canada
+        'ON': 'canada', 'BC': 'canada', 'QC': 'canada', 'AB': 'canada',
+        # UK
+        'UK': 'united_kingdom', 'ENGLAND': 'united_kingdom', 'SCOTLAND': 'united_kingdom',
+        'GREATER LONDON': 'united_kingdom', 'GREATER MANCHESTER': 'united_kingdom',
+        'WEST MIDLANDS': 'united_kingdom', 'MERSEYSIDE': 'united_kingdom',
+        # Australia  
+        'NSW': 'australia', 'VIC': 'australia', 'QLD': 'australia', 'WA': 'australia', 'SA': 'australia',
+        # Singapore
+        'SG': 'singapore', 'SINGAPORE': 'singapore',
+        # Japan
+        'JP': 'japan', 'JAPAN': 'japan',
+        # Hong Kong
+        'HK': 'hong_kong', 'HONG KONG': 'hong_kong',
+        # European Countries
+        'GERMANY': 'germany', 'DE': 'germany',
+        'FRANCE': 'france', 'FR': 'france',
+        'ITALY': 'italy', 'IT': 'italy',
+        'SPAIN': 'spain', 'ES': 'spain',
+        'NETHERLANDS': 'netherlands', 'NL': 'netherlands',
+        'SWITZERLAND': 'switzerland', 'CH': 'switzerland',
+        'BELGIUM': 'belgium', 'BE': 'belgium',
+        'AUSTRIA': 'austria', 'AT': 'austria',
+        'SWEDEN': 'sweden', 'SE': 'sweden',
+        'NORWAY': 'norway', 'NO': 'norway',
+        'DENMARK': 'denmark', 'DK': 'denmark',
+        'FINLAND': 'finland', 'FI': 'finland'
+    }
+    
+    # Check for international patterns in city names
+    international_cities = {
+        'TORONTO': 'canada', 'VANCOUVER': 'canada', 'MONTREAL': 'canada', 'CALGARY': 'canada', 'OTTAWA': 'canada', 'EDMONTON': 'canada',
+        'LONDON': 'united_kingdom', 'MANCHESTER': 'united_kingdom', 'EDINBURGH': 'united_kingdom', 
+        'BIRMINGHAM': 'united_kingdom', 'GLASGOW': 'united_kingdom', 'LIVERPOOL': 'united_kingdom',
+        'SYDNEY': 'australia', 'MELBOURNE': 'australia', 'BRISBANE': 'australia', 'PERTH': 'australia', 'ADELAIDE': 'australia',
+        'SINGAPORE': 'singapore',
+        'TOKYO': 'japan', 'OSAKA': 'japan', 'YOKOHAMA': 'japan',
+        'HONG KONG': 'hong_kong',
+        # European Cities
+        'BERLIN': 'germany', 'MUNICH': 'germany', 'HAMBURG': 'germany', 'FRANKFURT': 'germany', 'COLOGNE': 'germany', 'STUTTGART': 'germany',
+        'PARIS': 'france', 'LYON': 'france', 'MARSEILLE': 'france', 'TOULOUSE': 'france', 'NICE': 'france', 'BORDEAUX': 'france',
+        'ROME': 'italy', 'MILAN': 'italy', 'NAPLES': 'italy', 'TURIN': 'italy', 'FLORENCE': 'italy', 'BOLOGNA': 'italy',
+        'MADRID': 'spain', 'BARCELONA': 'spain', 'VALENCIA': 'spain', 'SEVILLE': 'spain', 'BILBAO': 'spain', 'MALAGA': 'spain',
+        'AMSTERDAM': 'netherlands', 'ROTTERDAM': 'netherlands', 'THE HAGUE': 'netherlands', 'UTRECHT': 'netherlands', 'EINDHOVEN': 'netherlands', 'TILBURG': 'netherlands',
+        'ZURICH': 'switzerland', 'GENEVA': 'switzerland', 'BASEL': 'switzerland', 'BERN': 'switzerland', 'LAUSANNE': 'switzerland', 'WINTERTHUR': 'switzerland',
+        'BRUSSELS': 'belgium', 'ANTWERP': 'belgium', 'GHENT': 'belgium', 'BRUGES': 'belgium', 'LEUVEN': 'belgium', 'LIEGE': 'belgium',
+        'VIENNA': 'austria', 'SALZBURG': 'austria', 'INNSBRUCK': 'austria', 'GRAZ': 'austria', 'LINZ': 'austria', 'KLAGENFURT': 'austria',
+        'STOCKHOLM': 'sweden', 'GOTHENBURG': 'sweden', 'MALMÖ': 'sweden', 'UPPSALA': 'sweden', 'VÄSTERÅS': 'sweden', 'ÖREBRO': 'sweden',
+        'OSLO': 'norway', 'BERGEN': 'norway', 'TRONDHEIM': 'norway', 'STAVANGER': 'norway', 'KRISTIANSAND': 'norway', 'FREDRIKSTAD': 'norway',
+        'COPENHAGEN': 'denmark', 'AARHUS': 'denmark', 'ODENSE': 'denmark', 'AALBORG': 'denmark', 'ESBJERG': 'denmark', 'RANDERS': 'denmark',
+        'HELSINKI': 'finland', 'TAMPERE': 'finland', 'TURKU': 'finland', 'OULU': 'finland', 'JYVÄSKYLÄ': 'finland', 'LAHTI': 'finland'
+    }
+    
+    if region in international_regions:
+        return True, international_regions[region]
+    elif city.upper() in international_cities:
+        return True, international_cities[city.upper()]
+    
+    return False, ""
+
+
+def get_international_tax_params(
+    location: str,
+    country: str,
+    filing_status: str = "single",
+    year: int = 2024,
+    income: Optional[float] = None,
+    manual_federal_rate: Optional[float] = None,
+    manual_state_rate: Optional[float] = None
+) -> TaxParams:
+    """
+    Get tax parameters for international locations.
+    """
+    tax_data = load_tax_data()
+    year_str = str(year)
+    
+    # Get year data or default to 2024
+    year_data = tax_data.get(year_str, tax_data.get("2024", {}))
+    international_data = year_data.get("international", {})
+    
+    city, region = parse_location(location)
+    
+    if country == "canada":
+        # Canada has federal + provincial taxes
+        federal_data = international_data.get("canada", {}).get("federal", {}).get(filing_status, {})
+        provincial_data = international_data.get("canada", {}).get("provinces", {}).get(region, {}).get(filing_status, {})
+        
+        federal_std_ded = federal_data.get("standard_deduction", 15000)
+        provincial_std_ded = provincial_data.get("standard_deduction", 0)
+        
+        # Calculate federal rate
+        if manual_federal_rate is not None:
+            federal_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in federal_data:
+            taxable_income = max(0, income - federal_std_ded)
+            federal_rate = calculate_marginal_rate_from_brackets(taxable_income, federal_data["tax_brackets"])
+        else:
+            federal_rate = 0.25  # Default
+        
+        # Calculate provincial rate
+        if manual_state_rate is not None:
+            provincial_rate = manual_state_rate
+        elif income is not None and "tax_brackets" in provincial_data:
+            taxable_income = max(0, income - provincial_std_ded)
+            provincial_rate = calculate_marginal_rate_from_brackets(taxable_income, provincial_data["tax_brackets"])
+        else:
+            provincial_rate = 0.10  # Default
+        
+        return TaxParams(
+            federal_marginal_rate=federal_rate,
+            state_marginal_rate=provincial_rate,
+            salt_cap=0,  # No SALT cap in Canada
+            standard_deduction=max(federal_std_ded, provincial_std_ded),
+            location=location,
+            filing_status=filing_status
+        )
+    
+    elif country == "united_kingdom":
+        # UK has income tax (varies by region)
+        region_key = "scotland" if "SCOTLAND" in region.upper() or "EDINBURGH" in city.upper() or "GLASGOW" in city.upper() else "england"
+        
+        uk_data = international_data.get("united_kingdom", {}).get("income_tax", {}).get(region_key, {}).get(filing_status, {})
+        
+        std_ded = uk_data.get("standard_deduction", 12570)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in uk_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, uk_data["tax_brackets"])
+        else:
+            tax_rate = 0.20  # Default basic rate
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,  # No separate state tax
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    elif country == "australia":
+        # Australia has federal tax only
+        aus_data = international_data.get("australia", {}).get("federal", {}).get(filing_status, {})
+        
+        std_ded = aus_data.get("standard_deduction", 18200)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in aus_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, aus_data["tax_brackets"])
+        else:
+            tax_rate = 0.325  # Default middle rate
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    elif country == "singapore":
+        # Singapore income tax
+        residency = "resident" if manual_state_rate is None else "non_resident"
+        sg_data = international_data.get("singapore", {}).get("income_tax", {}).get(residency, {}).get(filing_status, {})
+        
+        std_ded = sg_data.get("standard_deduction", 1000 if residency == "resident" else 0)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in sg_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, sg_data["tax_brackets"])
+        else:
+            tax_rate = 0.24 if residency == "non_resident" else 0.07  # Default rates
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    elif country == "japan":
+        # Japan income tax
+        jp_data = international_data.get("japan", {}).get("income_tax", {}).get("resident", {}).get(filing_status, {})
+        
+        std_ded = jp_data.get("standard_deduction", 380000 if filing_status == "single" else 760000)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in jp_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, jp_data["tax_brackets"])
+        else:
+            tax_rate = 0.20  # Default rate
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    elif country == "hong_kong":
+        # Hong Kong salaries tax
+        hk_data = international_data.get("hong_kong", {}).get("salaries_tax", {}).get("resident", {}).get(filing_status, {})
+        
+        std_ded = hk_data.get("standard_deduction", 132000 if filing_status == "single" else 264000)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in hk_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, hk_data["tax_brackets"])
+        else:
+            tax_rate = 0.17  # Default max rate
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    # European countries - handle federal tax systems
+    elif country in ["germany", "france", "italy", "spain", "netherlands", "switzerland", "belgium", "austria", "sweden", "norway", "denmark", "finland"]:
+        country_data = international_data.get(country, {}).get("federal", {}).get(filing_status, {})
+        
+        std_ded = country_data.get("standard_deduction", 0)
+        
+        if manual_federal_rate is not None:
+            tax_rate = manual_federal_rate
+        elif income is not None and "tax_brackets" in country_data:
+            taxable_income = max(0, income - std_ded)
+            tax_rate = calculate_marginal_rate_from_brackets(taxable_income, country_data["tax_brackets"])
+        else:
+            # Default rates by country based on research
+            default_rates = {
+                "germany": 0.42, "france": 0.30, "italy": 0.38, "spain": 0.37,
+                "netherlands": 0.495, "switzerland": 0.11, "belgium": 0.45, "austria": 0.48,
+                "sweden": 0.32, "norway": 0.316, "denmark": 0.379, "finland": 0.175
+            }
+            tax_rate = default_rates.get(country, 0.25)
+        
+        return TaxParams(
+            federal_marginal_rate=tax_rate,
+            state_marginal_rate=0,  # European countries typically have single tax system
+            salt_cap=0,
+            standard_deduction=std_ded,
+            location=location,
+            filing_status=filing_status
+        )
+    
+    # Fallback for unknown international locations
+    return TaxParams(
+        federal_marginal_rate=0.25,
+        state_marginal_rate=0,
+        salt_cap=0,
+        standard_deduction=10000,
+        location=location,
+        filing_status=filing_status
+    )
 
 
 def get_tax_params(
@@ -130,9 +416,10 @@ def get_tax_params(
 ) -> TaxParams:
     """
     Get tax parameters for a given location and filing status.
+    Supports both US and international locations.
     
     Args:
-        location: Location string (e.g., "NYC, NY", "Hoboken, NJ")
+        location: Location string (e.g., "NYC, NY", "Toronto, ON", "London, England")
         filing_status: "single" or "married"
         year: Tax year (defaults to 2024)
         income: Annual income for bracket-based calculation (optional)
@@ -142,6 +429,16 @@ def get_tax_params(
     Returns:
         TaxParams object with federal and state tax information
     """
+    # Check if this is an international location
+    is_international, country = is_international_location(location)
+    
+    if is_international:
+        return get_international_tax_params(
+            location, country, filing_status, year, income, 
+            manual_federal_rate, manual_state_rate
+        )
+    
+    # Original US logic
     tax_data = load_tax_data()
     year_str = str(year)
     
@@ -326,16 +623,18 @@ def get_tax_breakdown(
 def get_available_locations() -> list[str]:
     """
     Get list of available locations with tax data.
+    Includes both US and international locations.
     
     Returns:
         List of location strings
     """
     tax_data = load_tax_data()
     year_data = tax_data.get("2024", {})
-    states = year_data.get("states", {}).keys()
     
-    # Return common locations for each state
     locations = []
+    
+    # US locations
+    states = year_data.get("states", {}).keys()
     for state in states:
         if state == "NY":
             locations.extend(["NYC, NY", "Brooklyn, NY", "Queens, NY", "Bronx, NY", "Staten Island, NY", "Westchester County, NY", "Long Island, NY"])
@@ -375,5 +674,48 @@ def get_available_locations() -> list[str]:
             locations.extend(["Denver, CO", "Boulder, CO", "Colorado Springs, CO"])
         elif state == "OR":
             locations.extend(["Portland, OR", "Eugene, OR"])
+    
+    # International locations
+    international_locations = [
+        # Canada
+        "Toronto, ON", "Vancouver, BC", "Montreal, QC", "Calgary, AB", "Ottawa, ON", "Edmonton, AB",
+        # United Kingdom  
+        "London, England", "Manchester, England", "Edinburgh, Scotland", "Birmingham, England", "Glasgow, Scotland", "Liverpool, England",
+        # Australia
+        "Sydney, NSW", "Melbourne, VIC", "Brisbane, QLD", "Perth, WA", "Adelaide, SA",
+        # Singapore
+        "Singapore",
+        # Japan
+        "Tokyo, Japan", "Osaka, Japan", "Yokohama, Japan",
+        # Hong Kong
+        "Hong Kong",
+        # European Countries
+        # Germany
+        "Berlin, Germany", "Munich, Germany", "Hamburg, Germany", "Frankfurt, Germany", "Cologne, Germany", "Stuttgart, Germany",
+        # France
+        "Paris, France", "Lyon, France", "Marseille, France", "Toulouse, France", "Nice, France", "Bordeaux, France",
+        # Italy
+        "Rome, Italy", "Milan, Italy", "Naples, Italy", "Turin, Italy", "Florence, Italy", "Bologna, Italy",
+        # Spain
+        "Madrid, Spain", "Barcelona, Spain", "Valencia, Spain", "Seville, Spain", "Bilbao, Spain", "Malaga, Spain",
+        # Netherlands
+        "Amsterdam, Netherlands", "Rotterdam, Netherlands", "The Hague, Netherlands", "Utrecht, Netherlands", "Eindhoven, Netherlands", "Tilburg, Netherlands",
+        # Switzerland
+        "Zurich, Switzerland", "Geneva, Switzerland", "Basel, Switzerland", "Bern, Switzerland", "Lausanne, Switzerland", "Winterthur, Switzerland",
+        # Belgium
+        "Brussels, Belgium", "Antwerp, Belgium", "Ghent, Belgium", "Bruges, Belgium", "Leuven, Belgium", "Liege, Belgium",
+        # Austria
+        "Vienna, Austria", "Salzburg, Austria", "Innsbruck, Austria", "Graz, Austria", "Linz, Austria", "Klagenfurt, Austria",
+        # Sweden
+        "Stockholm, Sweden", "Gothenburg, Sweden", "Malmö, Sweden", "Uppsala, Sweden", "Västerås, Sweden", "Örebro, Sweden",
+        # Norway
+        "Oslo, Norway", "Bergen, Norway", "Trondheim, Norway", "Stavanger, Norway", "Kristiansand, Norway", "Fredrikstad, Norway",
+        # Denmark
+        "Copenhagen, Denmark", "Aarhus, Denmark", "Odense, Denmark", "Aalborg, Denmark", "Esbjerg, Denmark", "Randers, Denmark",
+        # Finland
+        "Helsinki, Finland", "Tampere, Finland", "Turku, Finland", "Oulu, Finland", "Jyväskylä, Finland", "Lahti, Finland"
+    ]
+    
+    locations.extend(international_locations)
     
     return sorted(locations) 
