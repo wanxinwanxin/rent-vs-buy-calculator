@@ -28,6 +28,7 @@ from ui.charts import (
     display_assumptions_info
 )
 from ui.sensitivity import create_sensitivity_panel, create_tornado_chart
+from calc.metrics import format_currency
 
 
 def configure_page():
@@ -172,14 +173,14 @@ def display_results():
     st.subheader("💡 Recommendation")
     if results.net_worth_difference > 0:
         if results.net_worth_difference > user_inputs.purchase_price * 0.1:  # >10% of home price
-            st.success(f"**Strong Buy Signal** - Buying is projected to result in {results.net_worth_difference:,.0f} higher net worth after {user_inputs.horizon_years} years.")
+            st.success(f"**Strong Buy Signal** - Buying is projected to result in {format_currency(results.net_worth_difference)} higher net worth after {user_inputs.horizon_years} years.")
         else:
-            st.info(f"**Slight Buy Advantage** - Buying is projected to result in {results.net_worth_difference:,.0f} higher net worth, but the difference is modest.")
+            st.info(f"**Slight Buy Advantage** - Buying is projected to result in {format_currency(results.net_worth_difference)} higher net worth, but the difference is modest.")
     else:
         if abs(results.net_worth_difference) > user_inputs.purchase_price * 0.1:
-            st.warning(f"**Strong Rent Signal** - Renting is projected to result in {abs(results.net_worth_difference):,.0f} higher net worth after {user_inputs.horizon_years} years.")
+            st.warning(f"**Strong Rent Signal** - Renting is projected to result in {format_currency(abs(results.net_worth_difference))} higher net worth after {user_inputs.horizon_years} years.")
         else:
-            st.info(f"**Slight Rent Advantage** - Renting is projected to result in {abs(results.net_worth_difference):,.0f} higher net worth, but the difference is modest.")
+            st.info(f"**Slight Rent Advantage** - Renting is projected to result in {format_currency(abs(results.net_worth_difference))} higher net worth, but the difference is modest.")
     
     # Additional context
     if results.breakeven_month and results.breakeven_month <= user_inputs.horizon_years * 12:

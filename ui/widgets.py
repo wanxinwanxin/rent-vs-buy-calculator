@@ -35,7 +35,7 @@ def create_household_inputs() -> Dict[str, Any]:
             min_value=0,
             value=100000,
             step=5000,
-            format="%d",
+            format="%,d",
             help="Your gross annual income before taxes"
         )
         
@@ -51,17 +51,17 @@ def create_household_inputs() -> Dict[str, Any]:
             min_value=0,
             value=0 if filing_status == "single" else 80000,
             step=5000,
-            format="%d",
+            format="%,d",
             help="Spouse's gross annual income (if married)"
         )
         
         income_growth = st.slider(
             "Annual Income Growth",
             min_value=0.0,
-            max_value=0.10,
-            value=0.03,
-            step=0.005,
-            format="%.3f",
+            max_value=10.0,
+            value=3.0,
+            step=0.5,
+            format="%.1f%%",
             help="Expected annual income growth rate"
         )
     
@@ -79,7 +79,7 @@ def create_household_inputs() -> Dict[str, Any]:
     return {
         "income_you": income_you,
         "income_spouse": income_spouse,
-        "income_growth": income_growth,
+        "income_growth": income_growth / 100.0,  # Convert percentage back to decimal
         "filing_status": filing_status,
         "location": location
     }
@@ -101,17 +101,17 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=800000,
             step=25000,
-            format="%d",
+            format="%,d",
             help="Total home purchase price"
         )
         
         down_payment_pct = st.slider(
             "Down Payment %",
             min_value=0.0,
-            max_value=1.0,
-            value=mortgage_defaults.get("typical_down_payment", 0.20),
-            step=0.05,
-            format="%.2f",
+            max_value=100.0,
+            value=mortgage_defaults.get("typical_down_payment", 0.20) * 100,
+            step=5.0,
+            format="%.0f%%",
             help="Down payment as percentage of purchase price"
         )
         
@@ -120,17 +120,17 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=int(purchase_price * 0.02),  # 2% default
             step=1000,
-            format="%d",
+            format="%,d",
             help="One-time closing costs for buying"
         )
         
         mortgage_rate = st.slider(
             "Mortgage Rate",
-            min_value=0.01,
-            max_value=0.12,
-            value=mortgage_defaults.get("typical_rate", 0.07),
-            step=0.0025,
-            format="%.4f",
+            min_value=1.0,
+            max_value=12.0,
+            value=mortgage_defaults.get("typical_rate", 0.07) * 100,
+            step=0.25,
+            format="%.2f%%",
             help="Annual mortgage interest rate"
         )
         
@@ -147,10 +147,10 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
         property_tax_rate = st.slider(
             "Property Tax Rate",
             min_value=0.0,
-            max_value=0.05,
-            value=default_prop_tax_rate,
-            step=0.001,
-            format="%.4f",
+            max_value=5.0,
+            value=default_prop_tax_rate * 100,
+            step=0.1,
+            format="%.1f%%",
             help=f"Annual property tax rate (auto-filled: {default_prop_tax_rate*100:.1f}% for {location})"
         )
         
@@ -159,37 +159,37 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=int(purchase_price * homeowner_defaults.get("insurance_annual_pct", 0.003)),
             step=500,
-            format="%d",
+            format="%,d",
             help="Annual insurance and HOA fees"
         )
         
         maintenance_pct = st.slider(
             "Maintenance %",
             min_value=0.0,
-            max_value=0.05,
-            value=homeowner_defaults.get("maintenance_pct", 0.015),
-            step=0.0025,
-            format="%.4f",
+            max_value=5.0,
+            value=homeowner_defaults.get("maintenance_pct", 0.015) * 100,
+            step=0.25,
+            format="%.2f%%",
             help="Annual maintenance as % of home value"
         )
         
         annual_appreciation = st.slider(
             "Annual Appreciation",
-            min_value=-0.05,
-            max_value=0.10,
-            value=assumptions.get("market", {}).get("home_appreciation", 0.03),
-            step=0.005,
-            format="%.3f",
+            min_value=-5.0,
+            max_value=10.0,
+            value=assumptions.get("market", {}).get("home_appreciation", 0.03) * 100,
+            step=0.5,
+            format="%.1f%%",
             help="Expected annual home appreciation rate"
         )
         
         selling_cost_pct = st.slider(
             "Selling Costs %",
             min_value=0.0,
-            max_value=0.10,
-            value=homeowner_defaults.get("selling_cost_pct", 0.06),
-            step=0.005,
-            format="%.3f",
+            max_value=10.0,
+            value=homeowner_defaults.get("selling_cost_pct", 0.06) * 100,
+            step=0.5,
+            format="%.1f%%",
             help="Selling costs as % of sale price (realtor, transfer tax, etc.)"
         )
     
@@ -201,10 +201,10 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             points_pct = st.slider(
                 "Mortgage Points",
                 min_value=0.0,
-                max_value=0.03,
+                max_value=3.0,
                 value=0.0,
-                step=0.005,
-                format="%.3f",
+                step=0.5,
+                format="%.1f%%",
                 help="Points paid upfront to reduce rate"
             )
             
@@ -213,45 +213,46 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 min_value=0,
                 value=0,
                 step=500,
+                format="%,d",
                 help="Other annual homeowner costs"
             )
         
         with col2:
             pmi_threshold_pct = st.slider(
                 "PMI Threshold LTV",
-                min_value=0.70,
-                max_value=0.95,
-                value=0.80,
-                step=0.05,
-                format="%.2f",
+                min_value=70.0,
+                max_value=95.0,
+                value=80.0,
+                step=5.0,
+                format="%.0f%%",
                 help="LTV below which PMI is removed"
             )
             
             pmi_annual_pct = st.slider(
                 "PMI Rate",
                 min_value=0.0,
-                max_value=0.02,
-                value=assumptions.get("pmi", {}).get("annual_rate", 0.005),
-                step=0.001,
-                format="%.3f",
+                max_value=2.0,
+                value=assumptions.get("pmi", {}).get("annual_rate", 0.005) * 100,
+                step=0.1,
+                format="%.1f%%",
                 help="Annual PMI rate on loan balance"
             )
     
     return {
         "purchase_price": purchase_price,
-        "down_payment_pct": down_payment_pct,
+        "down_payment_pct": down_payment_pct / 100.0,  # Convert percentage back to decimal
         "closing_costs_buy": closing_costs_buy,
-        "mortgage_rate": mortgage_rate,
+        "mortgage_rate": mortgage_rate / 100.0,  # Convert percentage back to decimal
         "mortgage_term_years": mortgage_term_years,
-        "points_pct": points_pct if points_pct > 0 else None,
-        "property_tax_rate": property_tax_rate,
+        "points_pct": points_pct / 100.0 if points_pct > 0 else None,  # Convert percentage back to decimal
+        "property_tax_rate": property_tax_rate / 100.0,  # Convert percentage back to decimal
         "insurance_hoa_annual": insurance_hoa_annual,
-        "maintenance_pct": maintenance_pct,
+        "maintenance_pct": maintenance_pct / 100.0,  # Convert percentage back to decimal
         "other_owner_costs_annual": other_owner_costs_annual,
-        "annual_appreciation": annual_appreciation,
-        "selling_cost_pct": selling_cost_pct,
-        "pmi_threshold_pct": pmi_threshold_pct,
-        "pmi_annual_pct": pmi_annual_pct,
+        "annual_appreciation": annual_appreciation / 100.0,  # Convert percentage back to decimal
+        "selling_cost_pct": selling_cost_pct / 100.0,  # Convert percentage back to decimal
+        "pmi_threshold_pct": pmi_threshold_pct / 100.0,  # Convert percentage back to decimal
+        "pmi_annual_pct": pmi_annual_pct / 100.0,  # Convert percentage back to decimal
         "refinance_enabled": False,  # Not implemented in UI yet
         "expected_refi_rate": None
     }
@@ -271,17 +272,17 @@ def create_rent_inputs() -> Dict[str, Any]:
             min_value=0,
             value=4000,
             step=100,
-            format="%d",
+            format="%,d",
             help="Current monthly rent payment"
         )
         
         rent_growth_pct = st.slider(
             "Annual Rent Growth",
             min_value=0.0,
-            max_value=0.08,
-            value=assumptions.get("market", {}).get("rent_growth_rate", 0.03),
-            step=0.005,
-            format="%.3f",
+            max_value=8.0,
+            value=assumptions.get("market", {}).get("rent_growth_rate", 0.03) * 100,
+            step=0.5,
+            format="%.1f%%",
             help="Expected annual rent growth rate"
         )
     
@@ -291,13 +292,13 @@ def create_rent_inputs() -> Dict[str, Any]:
             min_value=0,
             value=200,
             step=50,
-            format="%d",
+            format="%,d",
             help="Other monthly renter costs (parking, storage, etc.)"
         )
     
     return {
         "rent_today_monthly": rent_today_monthly,
-        "rent_growth_pct": rent_growth_pct,
+        "rent_growth_pct": rent_growth_pct / 100.0,  # Convert percentage back to decimal
         "other_renter_costs_monthly": other_renter_costs_monthly
     }
 
@@ -314,21 +315,21 @@ def create_finance_inputs() -> Dict[str, Any]:
     with col1:
         alt_return_annual = st.slider(
             "Alternative Investment Return",
-            min_value=0.01,
-            max_value=0.15,
-            value=financial_defaults.get("alt_return_annual", 0.07),
-            step=0.005,
-            format="%.3f",
+            min_value=1.0,
+            max_value=15.0,
+            value=financial_defaults.get("alt_return_annual", 0.07) * 100,
+            step=0.5,
+            format="%.1f%%",
             help="Expected annual return from alternative investments (e.g., stock market)"
         )
         
         inflation_discount_annual = st.slider(
             "Inflation/Discount Rate",
-            min_value=0.01,
-            max_value=0.08,
-            value=financial_defaults.get("inflation_rate", 0.03),
-            step=0.005,
-            format="%.3f",
+            min_value=1.0,
+            max_value=8.0,
+            value=financial_defaults.get("inflation_rate", 0.03) * 100,
+            step=0.5,
+            format="%.1f%%",
             help="Inflation rate for discounting future cash flows"
         )
     
@@ -343,8 +344,8 @@ def create_finance_inputs() -> Dict[str, Any]:
         )
     
     return {
-        "alt_return_annual": alt_return_annual,
-        "inflation_discount_annual": inflation_discount_annual,
+        "alt_return_annual": alt_return_annual / 100.0,  # Convert percentage back to decimal
+        "inflation_discount_annual": inflation_discount_annual / 100.0,  # Convert percentage back to decimal
         "horizon_years": horizon_years
     }
 

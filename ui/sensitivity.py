@@ -24,11 +24,11 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
         st.markdown("**🏠 Home Appreciation**")
         appreciation_range = st.slider(
             "Annual Appreciation Rate",
-            min_value=-0.02,
-            max_value=0.08,
-            value=base_user_inputs.annual_appreciation,
-            step=0.005,
-            format="%.3f",
+            min_value=-2.0,
+            max_value=8.0,
+            value=base_user_inputs.annual_appreciation * 100,
+            step=0.5,
+            format="%.1f%%",
             key="sensitivity_appreciation",
             help="How much the home value increases each year"
         )
@@ -37,11 +37,11 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
         st.markdown("**📈 Investment Return**")
         return_range = st.slider(
             "Alternative Return Rate", 
-            min_value=0.02,
-            max_value=0.12,
-            value=base_user_inputs.alt_return_annual,
-            step=0.005,
-            format="%.3f",
+            min_value=2.0,
+            max_value=12.0,
+            value=base_user_inputs.alt_return_annual * 100,
+            step=0.5,
+            format="%.1f%%",
             key="sensitivity_return",
             help="Expected annual return from investing rent surplus"
         )
@@ -50,11 +50,11 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
         st.markdown("**🏠 Mortgage Rate**")
         rate_range = st.slider(
             "Mortgage Interest Rate",
-            min_value=0.03,
-            max_value=0.10,
-            value=base_user_inputs.mortgage_rate,
-            step=0.0025,
-            format="%.4f",
+            min_value=3.0,
+            max_value=10.0,
+            value=base_user_inputs.mortgage_rate * 100,
+            step=0.25,
+            format="%.2f%%",
             key="sensitivity_rate",
             help="Annual mortgage interest rate"
         )
@@ -63,7 +63,7 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
     if st.button("🔄 Run Sensitivity Analysis", key="run_sensitivity"):
         with st.spinner("Calculating scenarios..."):
             sensitivity_results = calculate_sensitivity_scenarios(
-                base_user_inputs, tax_params, appreciation_range, return_range, rate_range
+                base_user_inputs, tax_params, appreciation_range / 100.0, return_range / 100.0, rate_range / 100.0
             )
             
             display_sensitivity_results(sensitivity_results, base_user_inputs)
