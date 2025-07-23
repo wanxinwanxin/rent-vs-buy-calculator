@@ -3,7 +3,7 @@
 ## 🤖 Agent Briefing: Rent vs. Buy Calculator Codebase
 
 **Current Status**: PRODUCTION-READY IMPLEMENTATION ✅
-**Last Updated**: 2024-07-23
+**Last Updated**: 2024-07-24
 **Agent Instructions**: Keep this file updated when making significant changes
 
 ---
@@ -37,6 +37,7 @@
 4. **UI Components** (`ui/`)
    - ✅ Modular input widgets (`widgets.py`)
    - ✅ Interactive charts with Plotly (`charts.py`)
+   - ✅ Side-by-side buy vs rent comparison table (`charts.py`)
    - ✅ Sensitivity analysis tools (`sensitivity.py`)
 
 5. **Static Data** (`data/`)
@@ -111,6 +112,7 @@ rent-vs-buy-calculator/
 - **Smart Defaults**: Auto-populates based on location and assumptions
 - **Real-time Validation**: Input checking with helpful error messages
 - **Interactive Charts**: Monthly cash flows, cumulative costs, net worth progression
+- **Side-by-Side Comparison**: Monthly breakdown showing how top-line numbers are built up
 - **Sensitivity Analysis**: Variable sweeps and tornado charts
 - **Results Export**: Detailed tables and assumptions for review
 
@@ -329,6 +331,7 @@ When making significant changes, update this file by:
 **Fixed Issues:**
 - 2024-07-23: Removed invalid `format="%,d"` from all number inputs in `ui/widgets.py`
 - 2024-07-23: Enhanced UI with comma-formatted display labels for better dollar amount readability
+- 2024-07-24: Added comprehensive buy vs rent comparison table showing monthly breakdown and how top-line metrics are calculated
 
 ---
 

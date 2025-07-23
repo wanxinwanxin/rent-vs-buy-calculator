@@ -246,6 +246,9 @@ def display_detailed_tables(cash_flows: Dict[str, pd.DataFrame]) -> None:
     buy_df = cash_flows["buy"]
     rent_df = cash_flows["rent"]
     
+    # Add the new comparison section first
+    display_comparison_table(cash_flows)
+    
     with st.expander("📊 Detailed Buy Cash Flows"):
         if not buy_df.empty:
             # Select key columns for display
@@ -279,6 +282,159 @@ def display_detailed_tables(cash_flows: Dict[str, pd.DataFrame]) -> None:
             )
         else:
             st.info("No rent cash flow data available")
+
+
+def display_comparison_table(cash_flows: Dict[str, pd.DataFrame]) -> None:
+    """Display side-by-side comparison of buy vs rent cash flows with differences."""
+    
+    buy_df = cash_flows["buy"]
+    rent_df = cash_flows["rent"]
+    
+    with st.expander("⚖️ Buy vs Rent Comparison - Monthly Breakdown"):
+        if not buy_df.empty and not rent_df.empty:
+            st.markdown("""
+            **This table shows how the top-line comparison numbers are built up month by month:**
+            - **Monthly Difference**: Buy cost minus rent cost each month  
+            - **Cumulative Difference**: Running total of cost differences
+            - **Net Worth Difference**: Buy equity position minus rent investment portfolio
+            """)
+            
+            # Get derived inputs for loan calculations
+            derived_inputs = cash_flows.get("derived_inputs")
+            
+            # Create comparison dataframe
+            comparison_data = []
+            cumulative_cost_diff = 0
+            
+            for month in range(1, min(len(buy_df), len(rent_df)) + 1):
+                buy_row = buy_df.iloc[month - 1]
+                rent_row = rent_df.iloc[month - 1]
+                
+                # Monthly costs
+                buy_monthly_cost = buy_row.get("net_monthly_outflow", 0)
+                rent_monthly_cost = rent_row.get("total_rent_outflow", 0)
+                monthly_difference = buy_monthly_cost - rent_monthly_cost
+                cumulative_cost_diff += monthly_difference
+                
+                # Net worth positions - get accurate buy equity
+                buy_home_value = buy_row.get("home_value", 0)
+                
+                # Calculate accurate remaining loan balance using amortization data
+                if derived_inputs and hasattr(derived_inputs, 'loan_amount'):
+                    # Try to get remaining balance from the actual calculation
+                    principal_paid_to_date = buy_df.iloc[:month]["mortgage_principal"].sum()
+                    remaining_loan_balance = max(0, derived_inputs.loan_amount - principal_paid_to_date)
+                else:
+                    # Fallback to simplified calculation if derived_inputs not available
+                    remaining_loan_balance = max(0, buy_home_value * 0.8)  # Simplified estimate
+                
+                # Accurate equity calculation: home value - remaining loan balance
+                buy_equity = max(0, buy_home_value - remaining_loan_balance)
+                
+                rent_portfolio = rent_row.get("portfolio_balance", 0)
+                net_worth_difference = buy_equity - rent_portfolio
+                
+                comparison_data.append({
+                    "Month": month,
+                    "Buy Monthly Cost": buy_monthly_cost,
+                    "Rent Monthly Cost": rent_monthly_cost,
+                    "Monthly Difference": monthly_difference,
+                    "Cumulative Cost Diff": cumulative_cost_diff,
+                    "Buy Home Value": buy_home_value,
+                    "Buy Loan Balance": remaining_loan_balance,
+                    "Buy Equity": buy_equity,
+                    "Rent Portfolio": rent_portfolio,
+                    "Net Worth Difference": net_worth_difference
+                })
+            
+            comparison_df = pd.DataFrame(comparison_data)
+            
+            # Format the dataframe for better display
+            styled_df = comparison_df.round(0).astype({
+                'Month': 'int',
+                'Buy Monthly Cost': 'int', 
+                'Rent Monthly Cost': 'int',
+                'Monthly Difference': 'int',
+                'Cumulative Cost Diff': 'int',
+                'Buy Home Value': 'int',
+                'Buy Loan Balance': 'int',
+                'Buy Equity': 'int',
+                'Rent Portfolio': 'int',
+                'Net Worth Difference': 'int'
+            })
+            
+            # Display with column configuration for better formatting
+            st.dataframe(
+                styled_df,
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "Buy Monthly Cost": st.column_config.NumberColumn(
+                        "Buy Monthly Cost",
+                        format="$%d"
+                    ),
+                    "Rent Monthly Cost": st.column_config.NumberColumn(
+                        "Rent Monthly Cost", 
+                        format="$%d"
+                    ),
+                    "Monthly Difference": st.column_config.NumberColumn(
+                        "Monthly Difference",
+                        format="$%d"
+                    ),
+                    "Cumulative Cost Diff": st.column_config.NumberColumn(
+                        "Cumulative Cost Diff",
+                        format="$%d"
+                    ),
+                    "Buy Home Value": st.column_config.NumberColumn(
+                        "Buy Home Value",
+                        format="$%d"
+                    ),
+                    "Buy Loan Balance": st.column_config.NumberColumn(
+                        "Buy Loan Balance",
+                        format="$%d"
+                    ),
+                    "Buy Equity": st.column_config.NumberColumn(
+                        "Buy Equity",
+                        format="$%d"
+                    ),
+                    "Rent Portfolio": st.column_config.NumberColumn(
+                        "Rent Portfolio",
+                        format="$%d"
+                    ),
+                    "Net Worth Difference": st.column_config.NumberColumn(
+                        "Net Worth Difference",
+                        format="$%d"
+                    )
+                }
+            )
+            
+            # Add summary metrics
+            final_row = comparison_df.iloc[-1]
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.metric(
+                    "Final Monthly Cost Difference", 
+                    f"${final_row['Monthly Difference']:,.0f}",
+                    help="Buy minus rent monthly cost in final month"
+                )
+            
+            with col2:
+                st.metric(
+                    "Total Cumulative Cost Difference",
+                    f"${final_row['Cumulative Cost Diff']:,.0f}", 
+                    help="Total additional cost of buying vs renting over the period"
+                )
+            
+            with col3:
+                st.metric(
+                    "Final Net Worth Difference",
+                    f"${final_row['Net Worth Difference']:,.0f}",
+                    help="Buy equity minus rent portfolio at end of period"
+                )
+                
+        else:
+            st.info("No cash flow data available for comparison")
 
 
 def display_assumptions_info(user_inputs, tax_params, property_info) -> None:
