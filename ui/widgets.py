@@ -61,7 +61,7 @@ def create_household_inputs() -> Dict[str, Any]:
             max_value=0.10,
             value=0.03,
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Expected annual income growth rate"
         )
     
@@ -111,7 +111,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=1.0,
             value=mortgage_defaults.get("typical_down_payment", 0.20),
             step=0.05,
-            format="%.0%",
+            format="%.2f",
             help="Down payment as percentage of purchase price"
         )
         
@@ -130,7 +130,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=0.12,
             value=mortgage_defaults.get("typical_rate", 0.07),
             step=0.0025,
-            format="%.2%",
+            format="%.4f",
             help="Annual mortgage interest rate"
         )
         
@@ -150,8 +150,8 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=0.05,
             value=default_prop_tax_rate,
             step=0.001,
-            format="%.1%",
-            help=f"Annual property tax rate (auto-filled: {default_prop_tax_rate:.1%} for {location})"
+            format="%.4f",
+            help=f"Annual property tax rate (auto-filled: {default_prop_tax_rate*100:.1f}% for {location})"
         )
         
         insurance_hoa_annual = st.number_input(
@@ -169,7 +169,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=0.05,
             value=homeowner_defaults.get("maintenance_pct", 0.015),
             step=0.0025,
-            format="%.1%",
+            format="%.4f",
             help="Annual maintenance as % of home value"
         )
         
@@ -179,7 +179,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=0.10,
             value=assumptions.get("market", {}).get("home_appreciation", 0.03),
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Expected annual home appreciation rate"
         )
         
@@ -189,7 +189,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             max_value=0.10,
             value=homeowner_defaults.get("selling_cost_pct", 0.06),
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Selling costs as % of sale price (realtor, transfer tax, etc.)"
         )
     
@@ -204,7 +204,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 max_value=0.03,
                 value=0.0,
                 step=0.005,
-                format="%.1%",
+                format="%.3f",
                 help="Points paid upfront to reduce rate"
             )
             
@@ -223,7 +223,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 max_value=0.95,
                 value=0.80,
                 step=0.05,
-                format="%.0%",
+                format="%.2f",
                 help="LTV below which PMI is removed"
             )
             
@@ -233,7 +233,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 max_value=0.02,
                 value=assumptions.get("pmi", {}).get("annual_rate", 0.005),
                 step=0.001,
-                format="%.1%",
+                format="%.3f",
                 help="Annual PMI rate on loan balance"
             )
     
@@ -281,7 +281,7 @@ def create_rent_inputs() -> Dict[str, Any]:
             max_value=0.08,
             value=assumptions.get("market", {}).get("rent_growth_rate", 0.03),
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Expected annual rent growth rate"
         )
     
@@ -318,7 +318,7 @@ def create_finance_inputs() -> Dict[str, Any]:
             max_value=0.15,
             value=financial_defaults.get("alt_return_annual", 0.07),
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Expected annual return from alternative investments (e.g., stock market)"
         )
         
@@ -328,7 +328,7 @@ def create_finance_inputs() -> Dict[str, Any]:
             max_value=0.08,
             value=financial_defaults.get("inflation_rate", 0.03),
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             help="Inflation rate for discounting future cash flows"
         )
     

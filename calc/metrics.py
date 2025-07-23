@@ -238,4 +238,4 @@ def format_currency(amount: float) -> str:
 
 def format_percentage(rate: float) -> str:
     """Format a rate as percentage."""
-    return f"{rate:.1%}" 
+    return f"{rate*100:.1f}%" 

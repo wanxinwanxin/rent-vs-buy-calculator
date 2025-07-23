@@ -28,7 +28,7 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
             max_value=0.08,
             value=base_user_inputs.annual_appreciation,
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             key="sensitivity_appreciation",
             help="How much the home value increases each year"
         )
@@ -41,7 +41,7 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
             max_value=0.12,
             value=base_user_inputs.alt_return_annual,
             step=0.005,
-            format="%.1%",
+            format="%.3f",
             key="sensitivity_return",
             help="Expected annual return from investing rent surplus"
         )
@@ -54,7 +54,7 @@ def create_sensitivity_panel(base_user_inputs: UserInputs, tax_params) -> None:
             max_value=0.10,
             value=base_user_inputs.mortgage_rate,
             step=0.0025,
-            format="%.2%",
+            format="%.4f",
             key="sensitivity_rate",
             help="Annual mortgage interest rate"
         )
