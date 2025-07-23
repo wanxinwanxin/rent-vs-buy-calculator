@@ -117,7 +117,7 @@ rent-vs-buy-calculator/
 - **Side-by-Side Comparison**: Monthly breakdown showing how top-line numbers are built up
 - **Sensitivity Analysis**: Variable sweeps and tornado charts
 - **Results Export**: Detailed tables and assumptions for review
-- **Analysis Sharing**: Generate shareable URLs with pre-populated parameters
+- **Analysis Sharing**: Generate shareable URLs with pre-populated parameters and auto-run results
 
 ### Data Integration
 - **Tax Lookup**: Federal and state marginal rates by location
@@ -340,6 +340,7 @@ When making significant changes, update this file by:
 - 2024-12-19: Implemented NYC local income tax (separate from NY state tax) with proper tax bracket calculation
 - 2024-12-19: Enhanced tax lookup system to handle both state and local taxes with income-based marginal rate calculation
 - 2024-12-23: **NEW FEATURE**: Added URL sharing functionality allowing users to share analysis scenarios via shareable links
+- 2024-12-23: **ENHANCEMENT**: Added auto-run functionality - shared URLs now immediately display full analysis results
 
 ---
 
