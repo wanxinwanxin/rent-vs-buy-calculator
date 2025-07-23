@@ -23,36 +23,40 @@ def load_default_assumptions() -> dict:
         return {}
 
 
-def create_household_inputs() -> Dict[str, Any]:
+def create_household_inputs(defaults: Optional[UserInputs] = None) -> Dict[str, Any]:
     """Create household information input widgets."""
     st.subheader("💰 Household Information")
     
     col1, col2 = st.columns(2)
     
     with col1:
+        default_income_you = defaults.income_you if defaults else 100000
         income_you = st.number_input(
             "Your Annual Income",
             min_value=0,
-            value=100000,
+            value=int(default_income_you),
             step=5000,
-            help=f"Your gross annual income before taxes (Currently: ${100000:,})"
+            help=f"Your gross annual income before taxes (Currently: ${default_income_you:,})"
         )
         # Show formatted value for readability
         if income_you != 100000:
             st.caption(f"💰 **${income_you:,.0f}** per year")
         
+        default_filing_status = defaults.filing_status if defaults else "single"
+        filing_status_index = 0 if default_filing_status == "single" else 1
         filing_status = st.selectbox(
             "Filing Status",
             ["single", "married"],
+            index=filing_status_index,
             help="Tax filing status"
         )
     
     with col2:
-        default_spouse_income = 0 if filing_status == "single" else 80000
+        default_spouse_income = (defaults.income_spouse if defaults else 0) if filing_status == "single" else (defaults.income_spouse if defaults else 80000)
         income_spouse = st.number_input(
             "Spouse Annual Income",
             min_value=0,
-            value=default_spouse_income,
+            value=int(default_spouse_income),
             step=5000,
             help=f"Spouse's gross annual income (if married). Currently: ${default_spouse_income:,}"
         )
@@ -60,11 +64,12 @@ def create_household_inputs() -> Dict[str, Any]:
         if income_spouse > 0:
             st.caption(f"💰 **${income_spouse:,.0f}** per year")
         
+        default_income_growth = (defaults.income_growth * 100 if defaults else 3.0)
         income_growth = st.slider(
             "Annual Income Growth",
             min_value=0.0,
             max_value=10.0,
-            value=3.0,
+            value=default_income_growth,
             step=0.5,
             format="%.1f%%",
             help="Expected annual income growth rate"
@@ -77,7 +82,7 @@ def create_household_inputs() -> Dict[str, Any]:
     
     # Location with smart defaults
     available_locations = get_property_locations()
-    default_location = "NYC, NY" if "NYC, NY" in available_locations else available_locations[0] if available_locations else "NYC, NY"
+    default_location = (defaults.location if defaults else "NYC, NY") if ("NYC, NY" in available_locations or defaults) else available_locations[0] if available_locations else "NYC, NY"
     
     location = st.selectbox(
         "Location",
@@ -95,7 +100,7 @@ def create_household_inputs() -> Dict[str, Any]:
     }
 
 
-def create_buy_inputs(location: str) -> Dict[str, Any]:
+def create_buy_inputs(location: str, defaults: Optional[UserInputs] = None) -> Dict[str, Any]:
     """Create buy scenario input widgets."""
     st.subheader("🏠 Buy Scenario")
     
@@ -106,10 +111,11 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
     col1, col2 = st.columns(2)
     
     with col1:
+        default_purchase_price = defaults.purchase_price if defaults else 800000
         purchase_price = st.number_input(
             "Purchase Price",
             min_value=0,
-            value=800000,
+            value=int(default_purchase_price),
             step=25000,
             help="Total home purchase price"
         )
@@ -282,7 +288,7 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
     }
 
 
-def create_rent_inputs() -> Dict[str, Any]:
+def create_rent_inputs(defaults: Optional[UserInputs] = None) -> Dict[str, Any]:
     """Create rent scenario input widgets."""
     st.subheader("🏠 Rent Scenario")
     
@@ -291,10 +297,11 @@ def create_rent_inputs() -> Dict[str, Any]:
     col1, col2 = st.columns(2)
     
     with col1:
+        default_rent = defaults.rent_today_monthly if defaults else 4000
         rent_today_monthly = st.number_input(
             "Current Monthly Rent",
             min_value=0,
-            value=4000,
+            value=int(default_rent),
             step=100,
             help="Current monthly rent payment"
         )
@@ -335,7 +342,7 @@ def create_rent_inputs() -> Dict[str, Any]:
     }
 
 
-def create_finance_inputs() -> Dict[str, Any]:
+def create_finance_inputs(defaults: Optional[UserInputs] = None) -> Dict[str, Any]:
     """Create financial assumptions input widgets."""
     st.subheader("📈 Financial Assumptions")
     
@@ -382,7 +389,7 @@ def create_finance_inputs() -> Dict[str, Any]:
     }
 
 
-def create_tax_inputs(household_data: Dict[str, Any]) -> Dict[str, Any]:
+def create_tax_inputs(household_data: Dict[str, Any], defaults: Optional[UserInputs] = None) -> Dict[str, Any]:
     """Create tax configuration input widgets."""
     st.subheader("💰 Tax Settings")
     
@@ -506,23 +513,27 @@ def create_tax_inputs(household_data: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def create_user_inputs() -> UserInputs:
-    """Create and validate complete UserInputs from all widgets."""
+def create_user_inputs(defaults: Optional[UserInputs] = None) -> UserInputs:
+    """Create and validate complete UserInputs from all widgets.
     
-    # Create input sections
-    household_data = create_household_inputs()
+    Args:
+        defaults: Optional UserInputs object to use as default values
+    """
     
-    st.divider()
-    tax_data = create_tax_inputs(household_data)
-    
-    st.divider()
-    buy_data = create_buy_inputs(household_data["location"])
+    # Create input sections with optional defaults
+    household_data = create_household_inputs(defaults)
     
     st.divider()
-    rent_data = create_rent_inputs()
+    tax_data = create_tax_inputs(household_data, defaults)
     
     st.divider()
-    finance_data = create_finance_inputs()
+    buy_data = create_buy_inputs(household_data["location"], defaults)
+    
+    st.divider()
+    rent_data = create_rent_inputs(defaults)
+    
+    st.divider()
+    finance_data = create_finance_inputs(defaults)
     
     # Combine all inputs
     combined_data = {**household_data, **tax_data, **buy_data, **rent_data, **finance_data}

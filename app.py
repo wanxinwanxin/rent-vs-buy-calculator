@@ -28,6 +28,7 @@ from ui.charts import (
     display_assumptions_info
 )
 from ui.sensitivity import create_sensitivity_panel, create_tornado_chart
+from ui.sharing import check_for_shared_analysis, display_share_button, display_shared_analysis_info
 from calc.metrics import format_currency
 
 
@@ -81,14 +82,19 @@ def main():
     configure_page()
     display_header()
     
+    # Check for shared analysis from URL parameters
+    shared_inputs = check_for_shared_analysis()
+    if shared_inputs:
+        display_shared_analysis_info()
+    
     # Create sidebar for inputs
     with st.sidebar:
         st.header("📊 Input Parameters")
         st.markdown("Configure your scenario below:")
         
-        # Create user inputs using widgets
+        # Create user inputs using widgets with optional defaults from shared URL
         try:
-            user_inputs = create_user_inputs()
+            user_inputs = create_user_inputs(defaults=shared_inputs)
         except Exception as e:
             st.error(f"Error creating inputs: {e}")
             st.stop()
@@ -197,6 +203,16 @@ def display_results():
         st.info(f"💡 Buying breaks even after {results.breakeven_month/12:.1f} years")
     else:
         st.warning("⚠️ Buying does not break even within the analysis period")
+    
+    # Share Analysis Section
+    st.subheader("🔗 Share This Analysis")
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.markdown("Share your analysis results with others by generating a link with your parameters:")
+    with col2:
+        display_share_button(user_inputs)
+    
+    st.divider()
     
     # Charts
     st.subheader("📈 Analysis Charts")
