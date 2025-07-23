@@ -94,7 +94,20 @@ def main():
         
         # Create user inputs using widgets with optional defaults from shared URL
         try:
-            user_inputs = create_user_inputs(defaults=shared_inputs)
+            # Defensive coding: ensure we handle the function call properly
+            if shared_inputs is not None:
+                user_inputs = create_user_inputs(defaults=shared_inputs)
+            else:
+                # Call without the defaults parameter if shared_inputs is None
+                user_inputs = create_user_inputs()
+        except TypeError as e:
+            if "unexpected keyword argument 'defaults'" in str(e):
+                # Fallback: try calling without defaults parameter
+                st.warning("⚠️ Using fallback input creation method")
+                user_inputs = create_user_inputs()
+            else:
+                st.error(f"Error creating inputs: {e}")
+                st.stop()
         except Exception as e:
             st.error(f"Error creating inputs: {e}")
             st.stop()

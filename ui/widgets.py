@@ -518,7 +518,18 @@ def create_user_inputs(defaults: Optional[UserInputs] = None) -> UserInputs:
     
     Args:
         defaults: Optional UserInputs object to use as default values
+        
+    Returns:
+        UserInputs object with validated inputs
+        
+    Raises:
+        Exception: If input validation fails
     """
+    
+    # Ensure defaults is properly handled
+    if defaults is not None and not isinstance(defaults, UserInputs):
+        st.warning(f"Invalid defaults type: {type(defaults)}. Using None instead.")
+        defaults = None
     
     # Create input sections with optional defaults
     household_data = create_household_inputs(defaults)
