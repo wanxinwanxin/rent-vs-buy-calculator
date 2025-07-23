@@ -35,7 +35,6 @@ def create_household_inputs() -> Dict[str, Any]:
             min_value=0,
             value=100000,
             step=5000,
-            format="%,d",
             help="Your gross annual income before taxes"
         )
         
@@ -51,7 +50,6 @@ def create_household_inputs() -> Dict[str, Any]:
             min_value=0,
             value=0 if filing_status == "single" else 80000,
             step=5000,
-            format="%,d",
             help="Spouse's gross annual income (if married)"
         )
         
@@ -101,7 +99,6 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=800000,
             step=25000,
-            format="%,d",
             help="Total home purchase price"
         )
         
@@ -120,7 +117,6 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=int(purchase_price * 0.02),  # 2% default
             step=1000,
-            format="%,d",
             help="One-time closing costs for buying"
         )
         
@@ -159,7 +155,6 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             min_value=0,
             value=int(purchase_price * homeowner_defaults.get("insurance_annual_pct", 0.003)),
             step=500,
-            format="%,d",
             help="Annual insurance and HOA fees"
         )
         
@@ -213,7 +208,6 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 min_value=0,
                 value=0,
                 step=500,
-                format="%,d",
                 help="Other annual homeowner costs"
             )
         
@@ -272,7 +266,6 @@ def create_rent_inputs() -> Dict[str, Any]:
             min_value=0,
             value=4000,
             step=100,
-            format="%,d",
             help="Current monthly rent payment"
         )
         
@@ -292,7 +285,6 @@ def create_rent_inputs() -> Dict[str, Any]:
             min_value=0,
             value=200,
             step=50,
-            format="%,d",
             help="Other monthly renter costs (parking, storage, etc.)"
         )
     
