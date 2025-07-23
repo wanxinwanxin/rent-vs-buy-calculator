@@ -467,9 +467,7 @@ def display_assumptions_info(user_inputs, tax_params, property_info) -> None:
         if property_info:
             col1, col2 = st.columns(2)
             with col1:
-                # DEBUG: Show both values for troubleshooting
                 st.write(f"**Property Tax Rate:** {format_percentage(user_inputs.property_tax_rate)}")
-                st.caption(f"🔍 DEBUG - User input: {user_inputs.property_tax_rate:.4f} | Lookup default: {property_info['property_tax_rate']:.4f}")
                 st.write(f"**County:** {property_info.get('county', 'Unknown')}")
             with col2:
                 st.write(f"**Data Source:** {property_info.get('data_source', 'Unknown')}")
