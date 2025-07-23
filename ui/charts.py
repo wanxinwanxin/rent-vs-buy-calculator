@@ -467,11 +467,14 @@ def display_assumptions_info(user_inputs, tax_params, property_info) -> None:
         if property_info:
             col1, col2 = st.columns(2)
             with col1:
-                st.write(f"**Property Tax Rate:** {format_percentage(property_info['property_tax_rate'])}")
+                st.write(f"**Property Tax Rate:** {format_percentage(user_inputs.property_tax_rate)}")
                 st.write(f"**County:** {property_info.get('county', 'Unknown')}")
             with col2:
                 st.write(f"**Data Source:** {property_info.get('data_source', 'Unknown')}")
                 st.write(f"**Match Type:** {property_info.get('match_type', 'Unknown')}")
+                # Show if user adjusted from default
+                if abs(user_inputs.property_tax_rate - property_info['property_tax_rate']) > 0.001:
+                    st.caption(f"📝 Adjusted from default: {format_percentage(property_info['property_tax_rate'])}")
         
         st.subheader("Key Assumptions")
         st.write(f"**Home Appreciation:** {format_percentage(user_inputs.annual_appreciation)}")
