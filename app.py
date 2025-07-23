@@ -121,7 +121,17 @@ def main():
                 clean_inputs = sanitize_inputs(user_inputs)
                 
                 # Get tax parameters for location
-                tax_params = get_tax_params(clean_inputs.location, clean_inputs.filing_status)
+                total_income = clean_inputs.income_you + clean_inputs.income_spouse
+                manual_federal = clean_inputs.manual_federal_rate if clean_inputs.use_manual_tax_rates else None
+                manual_state = clean_inputs.manual_state_rate if clean_inputs.use_manual_tax_rates else None
+                
+                tax_params = get_tax_params(
+                    clean_inputs.location, 
+                    clean_inputs.filing_status,
+                    income=total_income,
+                    manual_federal_rate=manual_federal,
+                    manual_state_rate=manual_state
+                )
                 
                 # Get property info
                 property_info = get_property_info(clean_inputs.location)

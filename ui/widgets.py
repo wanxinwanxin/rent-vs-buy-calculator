@@ -350,11 +350,138 @@ def create_finance_inputs() -> Dict[str, Any]:
     }
 
 
+def create_tax_inputs(household_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Create tax configuration input widgets."""
+    st.subheader("💰 Tax Settings")
+    
+    # Import here to avoid circular imports
+    from services.tax_lookup import get_tax_breakdown
+    
+    # Calculate current rates for display
+    total_income = household_data["income_you"] + household_data["income_spouse"]
+    filing_status = household_data["filing_status"]
+    location = household_data["location"]
+    
+    try:
+        tax_breakdown = get_tax_breakdown(location, filing_status, total_income)
+        calculated_federal = tax_breakdown["federal"]["marginal_rate"]
+        calculated_state = tax_breakdown["state"]["marginal_rate"]
+        calculated_combined = tax_breakdown["combined"]["marginal_rate"]
+    except Exception:
+        # Fallback if calculation fails
+        calculated_federal = 0.24
+        calculated_state = 0.065
+        calculated_combined = calculated_federal + calculated_state
+    
+    # Display current calculated rates
+    with st.expander("📊 Current Tax Rate Calculation", expanded=True):
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            st.metric(
+                "Federal Marginal Rate",
+                f"{calculated_federal*100:.1f}%",
+                help=f"Based on ${total_income:,.0f} income"
+            )
+        
+        with col2:
+            st.metric(
+                "State Marginal Rate", 
+                f"{calculated_state*100:.1f}%",
+                help=f"For {location}"
+            )
+        
+        with col3:
+            st.metric(
+                "Combined Rate",
+                f"{calculated_combined*100:.1f}%",
+                help="Federal + State marginal rates"
+            )
+    
+    # Tax rate method selection
+    use_manual = st.radio(
+        "Tax Rate Calculation Method",
+        ["Auto-calculate from income", "Manual input"],
+        index=0,
+        help="Choose whether to calculate tax rates automatically or enter them manually"
+    )
+    
+    use_manual_tax_rates = use_manual == "Manual input"
+    manual_federal_rate = None
+    manual_state_rate = None
+    
+    if use_manual_tax_rates:
+        st.info("💡 Enter your actual marginal tax rates if you know them from your tax return or tax software.")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            manual_federal_rate = st.slider(
+                "Federal Marginal Rate",
+                min_value=0.0,
+                max_value=50.0,
+                value=calculated_federal * 100,
+                step=0.5,
+                format="%.1f%%",
+                help="Your federal marginal tax rate (from tax bracket)"
+            ) / 100.0
+        
+        with col2:
+            manual_state_rate = st.slider(
+                "State Marginal Rate",
+                min_value=0.0,
+                max_value=15.0,
+                value=calculated_state * 100,
+                step=0.1,
+                format="%.1f%%",
+                help="Your state marginal tax rate"
+            ) / 100.0
+        
+        # Show manual totals
+        manual_combined = manual_federal_rate + manual_state_rate
+        st.info(f"**Combined Manual Rate:** {manual_combined*100:.1f}%")
+    
+    else:
+        st.success(f"✅ Using auto-calculated rates: **{calculated_combined*100:.1f}%** combined marginal rate")
+        
+        # Show tax bracket info
+        if total_income > 0:
+            try:
+                with st.expander("📋 Tax Bracket Details"):
+                    federal_info = tax_breakdown["federal"]
+                    state_info = tax_breakdown["state"]
+                    
+                    col1, col2 = st.columns(2)
+                    
+                    with col1:
+                        st.write("**Federal:**")
+                        st.write(f"• Taxable Income: ${federal_info['taxable_income']:,.0f}")
+                        st.write(f"• Marginal Rate: {federal_info['marginal_rate']*100:.1f}%")
+                        st.write(f"• Effective Rate: {federal_info['effective_rate']*100:.1f}%")
+                    
+                    with col2:
+                        st.write(f"**State ({state_info['state_code']}):**")
+                        st.write(f"• Taxable Income: ${state_info['taxable_income']:,.0f}")
+                        st.write(f"• Marginal Rate: {state_info['marginal_rate']*100:.1f}%")
+                        st.write(f"• Effective Rate: {state_info['effective_rate']*100:.1f}%")
+            except Exception:
+                pass
+    
+    return {
+        "use_manual_tax_rates": use_manual_tax_rates,
+        "manual_federal_rate": manual_federal_rate,
+        "manual_state_rate": manual_state_rate
+    }
+
+
 def create_user_inputs() -> UserInputs:
     """Create and validate complete UserInputs from all widgets."""
     
     # Create input sections
     household_data = create_household_inputs()
+    
+    st.divider()
+    tax_data = create_tax_inputs(household_data)
     
     st.divider()
     buy_data = create_buy_inputs(household_data["location"])
@@ -366,7 +493,7 @@ def create_user_inputs() -> UserInputs:
     finance_data = create_finance_inputs()
     
     # Combine all inputs
-    combined_data = {**household_data, **buy_data, **rent_data, **finance_data}
+    combined_data = {**household_data, **tax_data, **buy_data, **rent_data, **finance_data}
     
     # Create and validate UserInputs object
     try:

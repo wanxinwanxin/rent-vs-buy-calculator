@@ -39,6 +39,11 @@ class UserInputs(BaseModel):
     inflation_discount_annual: float = Field(gt=0, default=0.03, description="Inflation/discount rate")
     horizon_years: int = Field(gt=0, default=10, description="Analysis horizon in years")
 
+    # Tax settings
+    use_manual_tax_rates: bool = Field(default=False, description="Use manual tax rates instead of calculated rates")
+    manual_federal_rate: Optional[float] = Field(ge=0, le=1, default=None, description="Manual federal marginal tax rate")
+    manual_state_rate: Optional[float] = Field(ge=0, le=1, default=None, description="Manual state marginal tax rate")
+
     # PMI, Refi toggles
     pmi_threshold_pct: Optional[float] = Field(ge=0, le=1, default=0.20, description="PMI threshold LTV")
     pmi_annual_pct: Optional[float] = Field(ge=0, le=1, default=0.005, description="Annual PMI rate")

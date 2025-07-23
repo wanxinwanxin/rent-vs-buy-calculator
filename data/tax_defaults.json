@@ -2,54 +2,139 @@
   "2024": {
     "federal": {
       "single": {
-        "marginal_rate": 0.24,
         "standard_deduction": 14600,
-        "salt_cap": 10000
+        "salt_cap": 10000,
+        "tax_brackets": [
+          {"min_income": 0, "max_income": 11000, "rate": 0.10},
+          {"min_income": 11000, "max_income": 44725, "rate": 0.12},
+          {"min_income": 44725, "max_income": 95375, "rate": 0.22},
+          {"min_income": 95375, "max_income": 197050, "rate": 0.24},
+          {"min_income": 197050, "max_income": 243725, "rate": 0.32},
+          {"min_income": 243725, "max_income": 609350, "rate": 0.35},
+          {"min_income": 609350, "max_income": null, "rate": 0.37}
+        ]
       },
       "married": {
-        "marginal_rate": 0.24,
         "standard_deduction": 29200,
-        "salt_cap": 10000
+        "salt_cap": 10000,
+        "tax_brackets": [
+          {"min_income": 0, "max_income": 22000, "rate": 0.10},
+          {"min_income": 22000, "max_income": 89450, "rate": 0.12},
+          {"min_income": 89450, "max_income": 190750, "rate": 0.22},
+          {"min_income": 190750, "max_income": 364200, "rate": 0.24},
+          {"min_income": 364200, "max_income": 462500, "rate": 0.32},
+          {"min_income": 462500, "max_income": 693750, "rate": 0.35},
+          {"min_income": 693750, "max_income": null, "rate": 0.37}
+        ]
       }
     },
     "states": {
       "NY": {
         "single": {
-          "marginal_rate": 0.065,
-          "standard_deduction": 8000
+          "standard_deduction": 8000,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 8500, "rate": 0.04},
+            {"min_income": 8500, "max_income": 11700, "rate": 0.045},
+            {"min_income": 11700, "max_income": 13900, "rate": 0.0525},
+            {"min_income": 13900, "max_income": 80650, "rate": 0.055},
+            {"min_income": 80650, "max_income": 215400, "rate": 0.06},
+            {"min_income": 215400, "max_income": 1077550, "rate": 0.065},
+            {"min_income": 1077550, "max_income": 5000000, "rate": 0.085},
+            {"min_income": 5000000, "max_income": 25000000, "rate": 0.097},
+            {"min_income": 25000000, "max_income": null, "rate": 0.103}
+          ]
         },
         "married": {
-          "marginal_rate": 0.065,
-          "standard_deduction": 16050
+          "standard_deduction": 16050,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 17150, "rate": 0.04},
+            {"min_income": 17150, "max_income": 23600, "rate": 0.045},
+            {"min_income": 23600, "max_income": 27900, "rate": 0.0525},
+            {"min_income": 27900, "max_income": 161550, "rate": 0.055},
+            {"min_income": 161550, "max_income": 323200, "rate": 0.06},
+            {"min_income": 323200, "max_income": 2155350, "rate": 0.065},
+            {"min_income": 2155350, "max_income": 5000000, "rate": 0.085},
+            {"min_income": 5000000, "max_income": 25000000, "rate": 0.097},
+            {"min_income": 25000000, "max_income": null, "rate": 0.103}
+          ]
         }
       },
       "NJ": {
         "single": {
-          "marginal_rate": 0.0897,
-          "standard_deduction": 1000
+          "standard_deduction": 1000,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 20000, "rate": 0.014},
+            {"min_income": 20000, "max_income": 35000, "rate": 0.0175},
+            {"min_income": 35000, "max_income": 40000, "rate": 0.035},
+            {"min_income": 40000, "max_income": 75000, "rate": 0.0553},
+            {"min_income": 75000, "max_income": 500000, "rate": 0.0637},
+            {"min_income": 500000, "max_income": 1000000, "rate": 0.0897},
+            {"min_income": 1000000, "max_income": null, "rate": 0.1075}
+          ]
         },
         "married": {
-          "marginal_rate": 0.0897,
-          "standard_deduction": 2000
+          "standard_deduction": 2000,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 20000, "rate": 0.014},
+            {"min_income": 20000, "max_income": 50000, "rate": 0.0175},
+            {"min_income": 50000, "max_income": 70000, "rate": 0.0245},
+            {"min_income": 70000, "max_income": 80000, "rate": 0.035},
+            {"min_income": 80000, "max_income": 150000, "rate": 0.0553},
+            {"min_income": 150000, "max_income": 500000, "rate": 0.0637},
+            {"min_income": 500000, "max_income": 1000000, "rate": 0.0897},
+            {"min_income": 1000000, "max_income": null, "rate": 0.1075}
+          ]
         }
       },
       "CT": {
         "single": {
-          "marginal_rate": 0.0699,
-          "standard_deduction": 0
+          "standard_deduction": 0,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 10000, "rate": 0.03},
+            {"min_income": 10000, "max_income": 50000, "rate": 0.05},
+            {"min_income": 50000, "max_income": 100000, "rate": 0.055},
+            {"min_income": 100000, "max_income": 200000, "rate": 0.06},
+            {"min_income": 200000, "max_income": 250000, "rate": 0.065},
+            {"min_income": 250000, "max_income": 500000, "rate": 0.069},
+            {"min_income": 500000, "max_income": null, "rate": 0.0699}
+          ]
         },
         "married": {
-          "marginal_rate": 0.0699,
-          "standard_deduction": 0
+          "standard_deduction": 0,
+          "tax_brackets": [
+            {"min_income": 0, "max_income": 20000, "rate": 0.03},
+            {"min_income": 20000, "max_income": 100000, "rate": 0.05},
+            {"min_income": 100000, "max_income": 200000, "rate": 0.055},
+            {"min_income": 200000, "max_income": 400000, "rate": 0.06},
+            {"min_income": 400000, "max_income": 500000, "rate": 0.065},
+            {"min_income": 500000, "max_income": 1000000, "rate": 0.069},
+            {"min_income": 1000000, "max_income": null, "rate": 0.0699}
+          ]
         }
       }
     }
   },
+  "api_config": {
+    "enabled": false,
+    "endpoint": null,
+    "api_key_env_var": "TAX_API_KEY",
+    "description": "Configure API endpoint for real-time tax bracket updates"
+  },
   "defaults": {
     "income_brackets": {
-      "description": "These are simplified marginal rates for upper-middle income households",
-      "federal_assumptions": "Assumes 24% federal marginal bracket (~$100k+ income)",
-      "state_assumptions": "Uses top marginal rates for each state"
+      "description": "2024 IRS and state tax brackets with accurate marginal rates",
+      "federal_source": "IRS Publication 15 (2024 tax year)",
+      "state_sources": {
+        "NY": "NYS Department of Taxation and Finance",
+        "NJ": "NJ Division of Taxation", 
+        "CT": "CT Department of Revenue Services"
+      },
+      "notes": [
+        "Tax brackets calculate marginal rates based on taxable income",
+        "Standard deductions reduce taxable income before applying brackets",
+        "SALT cap limits state/local tax deductions to $10,000",
+        "Manual override option available in UI for custom situations"
+      ]
     }
   }
 } 

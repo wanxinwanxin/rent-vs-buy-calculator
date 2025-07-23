@@ -291,12 +291,21 @@ def display_assumptions_info(user_inputs, tax_params, property_info) -> None:
         with col1:
             st.write(f"**Federal Marginal Rate:** {format_percentage(tax_params.federal_marginal_rate)}")
             st.write(f"**State Marginal Rate:** {format_percentage(tax_params.state_marginal_rate)}")
+            combined_rate = tax_params.federal_marginal_rate + tax_params.state_marginal_rate
+            st.write(f"**Combined Marginal Rate:** {format_percentage(combined_rate)}")
             st.write(f"**SALT Cap:** {format_currency(tax_params.salt_cap)}")
         
         with col2:
             st.write(f"**Standard Deduction:** {format_currency(tax_params.standard_deduction)}")
             st.write(f"**Filing Status:** {tax_params.filing_status.title()}")
             st.write(f"**Location:** {tax_params.location}")
+            
+            # Show if manual rates were used
+            if user_inputs.use_manual_tax_rates:
+                st.write("**Method:** Manual tax rates")
+            else:
+                total_income = user_inputs.income_you + user_inputs.income_spouse
+                st.write(f"**Method:** Auto-calculated from ${total_income:,.0f} income")
         
         st.subheader("Property Tax Information")
         if property_info:
