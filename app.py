@@ -32,6 +32,78 @@ from ui.sharing import check_for_shared_analysis, display_share_button, display_
 from calc.metrics import format_currency
 
 
+def run_analysis_calculation(user_inputs: UserInputs) -> bool:
+    """
+    Run the full analysis calculation and store results in session state.
+    
+    Args:
+        user_inputs: User input parameters
+        
+    Returns:
+        True if calculation succeeded, False otherwise
+    """
+    # Validate inputs before calculation
+    validation_errors = validate_user_inputs(user_inputs)
+    if validation_errors:
+        st.sidebar.error("❌ Input Validation Errors:")
+        for error in validation_errors:
+            st.sidebar.error(f"• {error}")
+        return False
+    
+    # Check feasibility and show warnings
+    is_feasible, warnings = check_calculation_feasibility(user_inputs)
+    if warnings:
+        st.sidebar.warning("⚠️ Scenario Warnings:")
+        for warning in warnings:
+            st.sidebar.warning(f"• {warning}")
+    
+    if not is_feasible:
+        st.sidebar.error("❌ Scenario not feasible - please adjust inputs")
+        return False
+    
+    try:
+        # Sanitize inputs
+        clean_inputs = sanitize_inputs(user_inputs)
+        
+        # Get tax parameters for location
+        total_income = clean_inputs.income_you + clean_inputs.income_spouse
+        manual_federal = clean_inputs.manual_federal_rate if clean_inputs.use_manual_tax_rates else None
+        manual_state = clean_inputs.manual_state_rate if clean_inputs.use_manual_tax_rates else None
+        
+        tax_params = get_tax_params(
+            clean_inputs.location, 
+            clean_inputs.filing_status,
+            income=total_income,
+            manual_federal_rate=manual_federal,
+            manual_state_rate=manual_state
+        )
+        
+        # Get property info
+        property_info = get_property_info(clean_inputs.location)
+        
+        # Run the full analysis
+        results = run_full_analysis(clean_inputs, tax_params)
+        
+        # Get detailed cash flows for charts
+        cash_flows = get_detailed_cash_flows(clean_inputs, tax_params)
+        
+        # Store results in session state
+        st.session_state.results = results
+        st.session_state.cash_flows = cash_flows
+        st.session_state.user_inputs = clean_inputs
+        st.session_state.tax_params = tax_params
+        st.session_state.property_info = property_info
+        
+        return True
+        
+    except Exception as e:
+        st.error(f"❌ Error during calculation: {str(e)}")
+        st.error("Please check your inputs and try again.")
+        if st.checkbox("Show detailed error"):
+            st.code(traceback.format_exc())
+        return False
+
+
 def configure_page():
     """Configure Streamlit page settings."""
     st.set_page_config(
@@ -112,69 +184,20 @@ def main():
             st.error(f"Error creating inputs: {e}")
             st.stop()
     
-    # Main content area
+    # Auto-run analysis if shared inputs were detected
+    if shared_inputs and not hasattr(st.session_state, 'results'):
+        with st.spinner("Loading shared analysis..."):
+            success = run_analysis_calculation(user_inputs)
+            if success:
+                st.success("✅ Shared analysis loaded!")
+    
+    # Main content area - Manual calculation button
     if st.sidebar.button("🔄 Calculate", type="primary", use_container_width=True):
-        
-        # Validate inputs before calculation
-        validation_errors = validate_user_inputs(user_inputs)
-        if validation_errors:
-            st.sidebar.error("❌ Input Validation Errors:")
-            for error in validation_errors:
-                st.sidebar.error(f"• {error}")
-            st.stop()
-        
-        # Check feasibility and show warnings
-        is_feasible, warnings = check_calculation_feasibility(user_inputs)
-        if warnings:
-            st.sidebar.warning("⚠️ Scenario Warnings:")
-            for warning in warnings:
-                st.sidebar.warning(f"• {warning}")
-        
-        if not is_feasible:
-            st.sidebar.error("❌ Scenario not feasible - please adjust inputs")
-            st.stop()
-        
         with st.spinner("Running analysis..."):
-            try:
-                # Sanitize inputs
-                clean_inputs = sanitize_inputs(user_inputs)
-                
-                # Get tax parameters for location
-                total_income = clean_inputs.income_you + clean_inputs.income_spouse
-                manual_federal = clean_inputs.manual_federal_rate if clean_inputs.use_manual_tax_rates else None
-                manual_state = clean_inputs.manual_state_rate if clean_inputs.use_manual_tax_rates else None
-                
-                tax_params = get_tax_params(
-                    clean_inputs.location, 
-                    clean_inputs.filing_status,
-                    income=total_income,
-                    manual_federal_rate=manual_federal,
-                    manual_state_rate=manual_state
-                )
-                
-                # Get property info
-                property_info = get_property_info(clean_inputs.location)
-                
-                # Run the full analysis
-                results = run_full_analysis(clean_inputs, tax_params)
-                
-                # Get detailed cash flows for charts
-                cash_flows = get_detailed_cash_flows(clean_inputs, tax_params)
-                
-                # Store results in session state
-                st.session_state.results = results
-                st.session_state.cash_flows = cash_flows
-                st.session_state.user_inputs = clean_inputs
-                st.session_state.tax_params = tax_params
-                st.session_state.property_info = property_info
-                
+            success = run_analysis_calculation(user_inputs)
+            if success:
                 st.success("✅ Analysis complete!")
-                
-            except Exception as e:
-                st.error(f"❌ Error during calculation: {str(e)}")
-                st.error("Please check your inputs and try again.")
-                if st.checkbox("Show detailed error"):
-                    st.code(traceback.format_exc())
+            else:
                 st.stop()
     
     # Display results if available
