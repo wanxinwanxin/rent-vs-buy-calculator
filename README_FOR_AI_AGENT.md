@@ -328,6 +328,7 @@ When making significant changes, update this file by:
 
 **Fixed Issues:**
 - 2024-07-23: Removed invalid `format="%,d"` from all number inputs in `ui/widgets.py`
+- 2024-07-23: Enhanced UI with comma-formatted display labels for better dollar amount readability
 
 ---
 

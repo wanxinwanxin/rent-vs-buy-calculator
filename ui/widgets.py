@@ -35,8 +35,11 @@ def create_household_inputs() -> Dict[str, Any]:
             min_value=0,
             value=100000,
             step=5000,
-            help="Your gross annual income before taxes"
+            help=f"Your gross annual income before taxes (Currently: ${100000:,})"
         )
+        # Show formatted value for readability
+        if income_you != 100000:
+            st.caption(f"💰 **${income_you:,.0f}** per year")
         
         filing_status = st.selectbox(
             "Filing Status",
@@ -45,13 +48,17 @@ def create_household_inputs() -> Dict[str, Any]:
         )
     
     with col2:
+        default_spouse_income = 0 if filing_status == "single" else 80000
         income_spouse = st.number_input(
             "Spouse Annual Income",
             min_value=0,
-            value=0 if filing_status == "single" else 80000,
+            value=default_spouse_income,
             step=5000,
-            help="Spouse's gross annual income (if married)"
+            help=f"Spouse's gross annual income (if married). Currently: ${default_spouse_income:,}"
         )
+        # Show formatted value for readability
+        if income_spouse > 0:
+            st.caption(f"💰 **${income_spouse:,.0f}** per year")
         
         income_growth = st.slider(
             "Annual Income Growth",
@@ -62,6 +69,11 @@ def create_household_inputs() -> Dict[str, Any]:
             format="%.1f%%",
             help="Expected annual income growth rate"
         )
+    
+    # Display total household income
+    total_income = income_you + income_spouse
+    if total_income > 0:
+        st.info(f"📊 **Total Household Income:** ${total_income:,.0f} per year")
     
     # Location with smart defaults
     available_locations = get_property_locations()
@@ -101,6 +113,8 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             step=25000,
             help="Total home purchase price"
         )
+        # Show formatted value for readability
+        st.caption(f"🏠 **${purchase_price:,.0f}** purchase price")
         
         down_payment_pct = st.slider(
             "Down Payment %",
@@ -111,6 +125,9 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             format="%.0f%%",
             help="Down payment as percentage of purchase price"
         )
+        # Show dollar amount of down payment
+        down_payment_amount = purchase_price * (down_payment_pct / 100.0)
+        st.caption(f"💵 **${down_payment_amount:,.0f}** down payment")
         
         closing_costs_buy = st.number_input(
             "Closing Costs",
@@ -119,6 +136,8 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             step=1000,
             help="One-time closing costs for buying"
         )
+        # Show formatted value for readability  
+        st.caption(f"📋 **${closing_costs_buy:,.0f}** closing costs")
         
         mortgage_rate = st.slider(
             "Mortgage Rate",
@@ -157,6 +176,8 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             step=500,
             help="Annual insurance and HOA fees"
         )
+        # Show formatted value for readability
+        st.caption(f"🏠 **${insurance_hoa_annual:,.0f}** per year (${insurance_hoa_annual/12:,.0f}/month)")
         
         maintenance_pct = st.slider(
             "Maintenance %",
@@ -167,6 +188,9 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             format="%.2f%%",
             help="Annual maintenance as % of home value"
         )
+        # Show dollar amount of maintenance
+        maintenance_amount = purchase_price * (maintenance_pct / 100.0)
+        st.caption(f"🔧 **${maintenance_amount:,.0f}** per year maintenance")
         
         annual_appreciation = st.slider(
             "Annual Appreciation",
@@ -187,6 +211,9 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
             format="%.1f%%",
             help="Selling costs as % of sale price (realtor, transfer tax, etc.)"
         )
+        # Show dollar amount of selling costs
+        selling_cost_amount = purchase_price * (selling_cost_pct / 100.0)
+        st.caption(f"📊 **${selling_cost_amount:,.0f}** estimated selling costs")
     
     # Advanced buy options in expander
     with st.expander("Advanced Buy Options"):
@@ -210,6 +237,9 @@ def create_buy_inputs(location: str) -> Dict[str, Any]:
                 step=500,
                 help="Other annual homeowner costs"
             )
+            # Show formatted value for readability
+            if other_owner_costs_annual > 0:
+                st.caption(f"💰 **${other_owner_costs_annual:,.0f}** per year (${other_owner_costs_annual/12:,.0f}/month)")
         
         with col2:
             pmi_threshold_pct = st.slider(
@@ -268,6 +298,8 @@ def create_rent_inputs() -> Dict[str, Any]:
             step=100,
             help="Current monthly rent payment"
         )
+        # Show formatted value for readability
+        st.caption(f"🏠 **${rent_today_monthly:,.0f}** per month (${rent_today_monthly*12:,.0f}/year)")
         
         rent_growth_pct = st.slider(
             "Annual Rent Growth",
@@ -287,6 +319,14 @@ def create_rent_inputs() -> Dict[str, Any]:
             step=50,
             help="Other monthly renter costs (parking, storage, etc.)"
         )
+        # Show formatted value for readability
+        if other_renter_costs_monthly > 0:
+            st.caption(f"💰 **${other_renter_costs_monthly:,.0f}** per month (${other_renter_costs_monthly*12:,.0f}/year)")
+    
+    # Show total monthly rent costs
+    total_monthly_rent = rent_today_monthly + other_renter_costs_monthly
+    if total_monthly_rent > 0:
+        st.info(f"📊 **Total Monthly Rent Costs:** ${total_monthly_rent:,.0f} per month (${total_monthly_rent*12:,.0f}/year)")
     
     return {
         "rent_today_monthly": rent_today_monthly,
