@@ -362,6 +362,7 @@ When making significant changes, update this file by:
 - 2024-12-23: **NEW FEATURE**: Added URL sharing functionality allowing users to share analysis scenarios via shareable links
 - 2024-12-23: **ENHANCEMENT**: Added auto-run functionality - shared URLs now immediately display full analysis results  
 - 2024-12-25: **MAJOR EXPANSION**: Added comprehensive international jurisdiction support for 95+ cities across 18 countries/regions (Canada, UK, Australia, Singapore, Japan, Hong Kong, Germany, France, Italy, Spain, Netherlands, Switzerland, Belgium, Austria, Sweden, Norway, Denmark, Finland)
+- 2024-12-25: **CRITICAL FIX**: Fixed international tax logic that incorrectly forced all foreign locations into US federal+state structure - now properly supports single national tax systems (most countries), federal+provincial (Canada), and federal+state (US) with correct UI labels
 
 ---
 

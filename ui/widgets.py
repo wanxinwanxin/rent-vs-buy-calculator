@@ -412,30 +412,64 @@ def create_tax_inputs(household_data: Dict[str, Any], defaults: Optional[UserInp
         calculated_state = 0.065
         calculated_combined = calculated_federal + calculated_state
     
+    # Get tax structure information for proper display
+    try:
+        from services.tax_lookup import get_tax_params
+        tax_params = get_tax_params(location, filing_status, 2024, total_income)
+        display_info = tax_params.display_tax_info
+    except Exception:
+        # Fallback if calculation fails
+        display_info = {
+            "primary_label": "Federal Tax Rate",
+            "primary_rate": calculated_federal,
+            "secondary_label": "State Tax Rate",
+            "secondary_rate": calculated_state,
+            "structure_name": "Federal + State"
+        }
+    
     # Display current calculated rates
-    with st.expander("📊 Current Tax Rate Calculation", expanded=True):
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            st.metric(
-                "Federal Marginal Rate",
-                f"{calculated_federal*100:.1f}%",
-                help=f"Based on ${total_income:,.0f} income"
-            )
-        
-        with col2:
-            st.metric(
-                "State Marginal Rate", 
-                f"{calculated_state*100:.1f}%",
-                help=f"For {location}"
-            )
-        
-        with col3:
-            st.metric(
-                "Combined Rate",
-                f"{calculated_combined*100:.1f}%",
-                help="Federal + State marginal rates"
-            )
+    with st.expander(f"📊 Current Tax Rate Calculation ({display_info['structure_name']})", expanded=True):
+        if display_info["secondary_label"] is not None:
+            # Two-column layout for dual tax systems
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.metric(
+                    display_info["primary_label"],
+                    f"{display_info['primary_rate']*100:.1f}%",
+                    help=f"Based on ${total_income:,.0f} income"
+                )
+            
+            with col2:
+                st.metric(
+                    display_info["secondary_label"], 
+                    f"{display_info['secondary_rate']*100:.1f}%",
+                    help=f"For {location}"
+                )
+            
+            with col3:
+                st.metric(
+                    "Combined Rate",
+                    f"{calculated_combined*100:.1f}%",
+                    help=f"{display_info['primary_label']} + {display_info['secondary_label']}"
+                )
+        else:
+            # Single-column layout for single tax systems
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.metric(
+                    display_info["primary_label"],
+                    f"{display_info['primary_rate']*100:.1f}%",
+                    help=f"Based on ${total_income:,.0f} income for {location}"
+                )
+            
+            with col2:
+                st.metric(
+                    "Effective Rate",
+                    f"{calculated_combined*100:.1f}%",
+                    help="Total marginal tax rate used in calculations"
+                )
     
     # Tax rate method selection
     use_manual = st.radio(
@@ -452,33 +486,49 @@ def create_tax_inputs(household_data: Dict[str, Any], defaults: Optional[UserInp
     if use_manual_tax_rates:
         st.info("💡 Enter your actual marginal tax rates if you know them from your tax return or tax software.")
         
-        col1, col2 = st.columns(2)
-        
-        with col1:
+        if display_info["secondary_label"] is not None:
+            # Two-input layout for dual tax systems
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                manual_federal_rate = st.slider(
+                    display_info["primary_label"],
+                    min_value=0.0,
+                    max_value=50.0,
+                    value=calculated_federal * 100,
+                    step=0.5,
+                    format="%.1f%%",
+                    help=f"Your {display_info['primary_label'].lower()} (from tax bracket)"
+                ) / 100.0
+            
+            with col2:
+                manual_state_rate = st.slider(
+                    display_info["secondary_label"],
+                    min_value=0.0,
+                    max_value=15.0,
+                    value=calculated_state * 100,
+                    step=0.1,
+                    format="%.1f%%",
+                    help=f"Your {display_info['secondary_label'].lower()}"
+                ) / 100.0
+            
+            # Show manual totals
+            manual_combined = manual_federal_rate + manual_state_rate
+            st.info(f"**Combined Manual Rate:** {manual_combined*100:.1f}%")
+        else:
+            # Single-input layout for single tax systems
             manual_federal_rate = st.slider(
-                "Federal Marginal Rate",
+                display_info["primary_label"],
                 min_value=0.0,
                 max_value=50.0,
                 value=calculated_federal * 100,
                 step=0.5,
                 format="%.1f%%",
-                help="Your federal marginal tax rate (from tax bracket)"
+                help=f"Your {display_info['primary_label'].lower()} (from tax bracket)"
             ) / 100.0
-        
-        with col2:
-            manual_state_rate = st.slider(
-                "State Marginal Rate",
-                min_value=0.0,
-                max_value=15.0,
-                value=calculated_state * 100,
-                step=0.1,
-                format="%.1f%%",
-                help="Your state marginal tax rate"
-            ) / 100.0
-        
-        # Show manual totals
-        manual_combined = manual_federal_rate + manual_state_rate
-        st.info(f"**Combined Manual Rate:** {manual_combined*100:.1f}%")
+            manual_state_rate = 0.0  # No secondary tax
+            
+            st.info(f"**Tax Rate:** {manual_federal_rate*100:.1f}%")
     
     else:
         st.success(f"✅ Using auto-calculated rates: **{calculated_combined*100:.1f}%** combined marginal rate")

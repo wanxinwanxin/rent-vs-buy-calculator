@@ -2,7 +2,7 @@
 Data models for rent vs buy calculator inputs and outputs.
 """
 from typing import Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 
 
 class UserInputs(BaseModel):
@@ -83,12 +83,62 @@ class DerivedInputs(BaseModel):
 class TaxParams(BaseModel):
     """Tax parameters for a given location and filing status."""
     
+    # Core backward compatibility fields
     federal_marginal_rate: float
     state_marginal_rate: float
     salt_cap: float
     standard_deduction: float
     location: str
     filing_status: str
+    
+    # New fields for international tax structures
+    tax_structure: Literal["federal_state", "single_national", "federal_provincial", "national_local"] = Field(default="federal_state")
+    
+    # Optional detailed breakdown for display purposes
+    tax_components: Optional[dict] = Field(default=None, description="Detailed tax breakdown for UI display")
+    
+    @computed_field
+    @property
+    def total_marginal_rate(self) -> float:
+        """Total combined marginal tax rate."""
+        return self.federal_marginal_rate + self.state_marginal_rate
+    
+    @computed_field
+    @property
+    def display_tax_info(self) -> dict:
+        """Get tax information formatted for display based on tax structure."""
+        if self.tax_structure == "single_national":
+            return {
+                "primary_label": "Income Tax Rate",
+                "primary_rate": self.federal_marginal_rate,
+                "secondary_label": None,
+                "secondary_rate": None,
+                "structure_name": "Single National Tax"
+            }
+        elif self.tax_structure == "federal_provincial":
+            return {
+                "primary_label": "Federal Tax Rate", 
+                "primary_rate": self.federal_marginal_rate,
+                "secondary_label": "Provincial Tax Rate",
+                "secondary_rate": self.state_marginal_rate,
+                "structure_name": "Federal + Provincial"
+            }
+        elif self.tax_structure == "national_local":
+            return {
+                "primary_label": "National Tax Rate",
+                "primary_rate": self.federal_marginal_rate, 
+                "secondary_label": "Local Tax Rate",
+                "secondary_rate": self.state_marginal_rate,
+                "structure_name": "National + Local"
+            }
+        else:  # federal_state (US default)
+            return {
+                "primary_label": "Federal Tax Rate",
+                "primary_rate": self.federal_marginal_rate,
+                "secondary_label": "State Tax Rate", 
+                "secondary_rate": self.state_marginal_rate,
+                "structure_name": "Federal + State"
+            }
 
 
 class CalculationResults(BaseModel):

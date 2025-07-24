@@ -245,7 +245,8 @@ def get_international_tax_params(
             salt_cap=0,  # No SALT cap in Canada
             standard_deduction=max(federal_std_ded, provincial_std_ded),
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="federal_provincial"
         )
     
     elif country == "united_kingdom":
@@ -265,16 +266,17 @@ def get_international_tax_params(
             tax_rate = 0.20  # Default basic rate
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,  # No separate state tax
+            federal_marginal_rate=tax_rate,  # Using federal field for national income tax
+            state_marginal_rate=0,  # UK has single national tax system
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
     elif country == "australia":
-        # Australia has federal tax only
+        # Australia has national income tax only
         aus_data = international_data.get("australia", {}).get("federal", {}).get(filing_status, {})
         
         std_ded = aus_data.get("standard_deduction", 18200)
@@ -288,12 +290,13 @@ def get_international_tax_params(
             tax_rate = 0.325  # Default middle rate
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,
+            federal_marginal_rate=tax_rate,  # Using federal field for national income tax
+            state_marginal_rate=0,  # Australia has single national tax system
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
     elif country == "singapore":
@@ -312,12 +315,13 @@ def get_international_tax_params(
             tax_rate = 0.24 if residency == "non_resident" else 0.07  # Default rates
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,
+            federal_marginal_rate=tax_rate,  # Using federal field for national income tax
+            state_marginal_rate=0,  # Singapore has single national tax system
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
     elif country == "japan":
@@ -335,12 +339,13 @@ def get_international_tax_params(
             tax_rate = 0.20  # Default rate
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,
+            federal_marginal_rate=tax_rate,  # Using federal field for national income tax
+            state_marginal_rate=0,  # Japan has single national tax system
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
     elif country == "hong_kong":
@@ -358,15 +363,16 @@ def get_international_tax_params(
             tax_rate = 0.17  # Default max rate
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,
+            federal_marginal_rate=tax_rate,  # Using federal field for national salaries tax
+            state_marginal_rate=0,  # Hong Kong has single tax system
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
-    # European countries - handle federal tax systems
+    # European countries - handle national tax systems
     elif country in ["germany", "france", "italy", "spain", "netherlands", "switzerland", "belgium", "austria", "sweden", "norway", "denmark", "finland"]:
         country_data = international_data.get(country, {}).get("federal", {}).get(filing_status, {})
         
@@ -387,22 +393,24 @@ def get_international_tax_params(
             tax_rate = default_rates.get(country, 0.25)
         
         return TaxParams(
-            federal_marginal_rate=tax_rate,
-            state_marginal_rate=0,  # European countries typically have single tax system
+            federal_marginal_rate=tax_rate,  # Using federal field for national income tax
+            state_marginal_rate=0,  # European countries have single national tax systems
             salt_cap=0,
             standard_deduction=std_ded,
             location=location,
-            filing_status=filing_status
+            filing_status=filing_status,
+            tax_structure="single_national"
         )
     
     # Fallback for unknown international locations
     return TaxParams(
-        federal_marginal_rate=0.25,
+        federal_marginal_rate=0.25,  # Using federal field for unknown tax
         state_marginal_rate=0,
         salt_cap=0,
         standard_deduction=10000,
         location=location,
-        filing_status=filing_status
+        filing_status=filing_status,
+        tax_structure="single_national"
     )
 
 
@@ -506,7 +514,8 @@ def get_tax_params(
         salt_cap=salt_cap,
         standard_deduction=final_standard_deduction,
         location=location,
-        filing_status=filing_status
+        filing_status=filing_status,
+        tax_structure="federal_state"
     )
 
 
